@@ -32,25 +32,13 @@ import { Form, Row, Col, FormGroup, List } from 'reactstrap';
 import formatCreationDate from 'helpers/formatCreationDate.js';
 import formatDuration from 'helpers/formatDuration';
 
+import { Course, Author } from 'components/Courses/Course.types';
+
 type NewCourseProps = {
 	addCourse: Dispatch<SetStateAction<unknown>>;
 	addAuthor: Dispatch<SetStateAction<unknown>>;
 	setIsFormVisible: Dispatch<SetStateAction<unknown>>;
 	allAuthors: Author[];
-};
-
-type Course = {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
-};
-
-type Author = {
-	id: string;
-	name: string;
 };
 
 const defaultFields = {

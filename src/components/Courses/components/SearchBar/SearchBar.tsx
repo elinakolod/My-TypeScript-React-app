@@ -5,18 +5,11 @@ import { SEARCH, SEARCH_PLACEHOLDER } from 'constants.js';
 import Button from 'common/Button/Button';
 import Input from 'common/Input/Input';
 
+import { Course } from 'components/Courses/Course.types';
+
 type SearchBarProps = {
 	setCourses: Dispatch<SetStateAction<unknown>>;
 	courses: Course[];
-};
-
-type Course = {
-	id: string;
-	title: string;
-	description: string;
-	creationDate: string;
-	duration: number;
-	authors: string[];
 };
 
 const SearchBar = ({ setCourses, courses }: SearchBarProps) => {
@@ -24,6 +17,7 @@ const SearchBar = ({ setCourses, courses }: SearchBarProps) => {
 	const [substring, setSubstring] = useState('');
 
 	const handleSearch = () => {
+		//debugger; // eslint-disable-line no-debugger
 		const fileteredCourses = courses.filter(
 			(course) =>
 				course.title.toLowerCase().includes(substring) ||

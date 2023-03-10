@@ -21,7 +21,11 @@ const Courses = () => {
 
 	const getAuthors = (course) => {
 		const courseAuthors = authors
-			.filter((author) => course.authors.includes(author.id))
+			.filter(
+				(author) =>
+					course.authors.includes(author.id) ||
+					course.authors.includes(author.name)
+			)
 			.map((author) => author.name);
 		return {
 			...course,
