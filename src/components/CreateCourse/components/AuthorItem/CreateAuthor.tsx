@@ -1,13 +1,9 @@
 import React from 'react';
 
-import {
-	CREATE_AUTHOR,
-	AUTHOR_NAME,
-	AUTHOR_PLACEHOLDER,
-} from '../../../../constants.js';
+import { CREATE_AUTHOR, AUTHOR_NAME, AUTHOR_PLACEHOLDER } from 'constants.js';
 
-import Button from '../../../../common/Button/Button';
-import Input from '../../../../common/Input/Input';
+import Button from 'common/Button/Button';
+import Input from 'common/Input/Input';
 
 type CreateAuthorProps = {
 	handleAuthorCreate: (event: unknown) => void;

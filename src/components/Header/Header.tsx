@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 
-import { DEFAULT_NAME, LOGIN, LOGOUT } from '../../constants.js';
+import { DEFAULT_NAME, LOGIN, LOGOUT } from 'constants.js';
 
 import styles from './Header.module.css';
 
 import Logo from './components/Logo/Logo';
-import Button from '../../common/Button/Button';
+import Button from 'common/Button/Button';
 import { Navbar, NavbarBrand } from 'reactstrap';
 
 type HeaderProps = {

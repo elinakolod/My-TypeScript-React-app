@@ -9,7 +9,10 @@ import {
 import { List } from 'reactstrap';
 import Button from '../../common/Button/Button';
 import CourseCard from './components/CourseCard/CourseCard';
+import SearchBar from './components/SearchBar/SearchBar';
 import CreateCourse from '../CreateCourse/CreateCourse';
+
+import styles from './Courses.module.css';
 
 const Courses = () => {
 	const formatCourses = () => {
@@ -39,11 +42,14 @@ const Courses = () => {
 					addCourse={setCourses}
 					addAuthor={setAuthors}
 					setIsFormVisible={setIsFormVisible}
+					allAuthors={authors}
 				/>
 			) : (
 				<>
+					<SearchBar courses={coursesCards} setCourses={setCourses} />
 					<span>
 						<Button
+							className={styles.addCourseButton}
 							text={ADD_COURSE}
 							handleButtonClick={() => {
 								setIsFormVisible(true);

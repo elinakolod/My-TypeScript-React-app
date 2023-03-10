@@ -73,3 +73,5 @@ export const DESCR_PLACEHOLDER = 'Enter description...';
 export const DURATION_PLACEHOLDER = 'Enter duration in minutes...';
 export const AUTHOR_PLACEHOLDER = 'Enter author name...';
 export const COURSE_ERROR = 'Please, fill in all fields';
+export const SEARCH = 'Search';
+export const SEARCH_PLACEHOLDER = 'Enter course name...';

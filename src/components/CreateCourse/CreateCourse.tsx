@@ -2,7 +2,6 @@ import React, { useState, Dispatch, SetStateAction } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
-	mockedAuthorsList,
 	CREATE_COURSE,
 	TITLE,
 	DESCRIPTION,
@@ -21,22 +20,23 @@ import {
 	COURSE_ERROR,
 	INVALID_SUMBOLS,
 	DEFAULT_HOURS,
-} from '../../constants.js';
+} from 'constants.js';
 
 import styles from './CreateCourse.module.css';
 
-import Button from '../../common/Button/Button';
-import Input from '../../common/Input/Input';
+import Button from 'common/Button/Button';
+import Input from 'common/Input/Input';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import { Form, Row, Col, FormGroup, List } from 'reactstrap';
 
-import formatCreationDate from '../../helpers/formatCreationDate.js';
-import formatDuration from '../../helpers/formatDuration';
+import formatCreationDate from 'helpers/formatCreationDate.js';
+import formatDuration from 'helpers/formatDuration';
 
 type NewCourseProps = {
 	addCourse: Dispatch<SetStateAction<unknown>>;
 	addAuthor: Dispatch<SetStateAction<unknown>>;
 	setIsFormVisible: Dispatch<SetStateAction<unknown>>;
+	allAuthors: Author[];
 };
 
 type Course = {
@@ -66,8 +66,9 @@ const CreateCourse = ({
 	addCourse,
 	addAuthor,
 	setIsFormVisible,
+	allAuthors,
 }: NewCourseProps) => {
-	const [authors, setAuthors] = useState<Author[]>(mockedAuthorsList);
+	const [authors, setAuthors] = useState<Author[]>(allAuthors);
 	const [authorName, setAuthorName] = useState('');
 	const [courseAuthors, setCourseAuthors] = useState<Author[]>([]);
 	const [courseDuration, setCourseDuration] = useState(0);
@@ -146,7 +147,10 @@ const CreateCourse = ({
 		if (validateFields(courseFields).length != 6) {
 			alert(COURSE_ERROR);
 		} else {
-			addAuthor((prevState) => [...prevState, ...courseAuthors]);
+			courseAuthors.forEach((author) => {
+				if (!allAuthors.includes(author))
+					addAuthor((prevState) => [...prevState, author]);
+			});
 			addCourse((prevState) => [...prevState, courseFields]);
 			setIsFormVisible(false);
 		}

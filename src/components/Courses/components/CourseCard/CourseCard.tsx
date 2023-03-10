@@ -1,16 +1,11 @@
 import React from 'react';
 
-import {
-	SHOW_COURSE,
-	AUTORS,
-	DURATION,
-	CREATED,
-} from '../../../../constants.js';
+import { SHOW_COURSE, AUTORS, DURATION, CREATED } from 'constants.js';
 
-import Button from '../../../../common/Button/Button';
-import { Card, CardBody, CardTitle, CardText, List } from 'reactstrap';
+import Button from 'common/Button/Button';
+import { Card, CardBody, CardTitle, CardText } from 'reactstrap';
 
-import formatDuration from '../../../../helpers/formatDuration';
+import formatDuration from 'helpers/formatDuration';
 
 type CourseProps = {
 	course: {
@@ -30,20 +25,14 @@ const CourseCard = ({ course }: CourseProps) => {
 				<CardText>{course.description}</CardText>
 			</CardBody>
 			<CardBody>
-				<List type='unstyled'>
-					<li>
-						<b>{AUTORS}</b>
-						{course.authors.join(', ')}
-					</li>
-					<li>
-						<b>{DURATION}</b>
-						{formatDuration(course.duration)}
-					</li>
-					<li>
-						<b>{CREATED}</b>
-						{course.creationDate.replace(/\//g, '.')}
-					</li>
-				</List>
+				<dl>
+					<dt>{AUTORS}</dt>
+					<dd>{course.authors.join(', ')}</dd>
+					<dt>{DURATION}</dt>
+					<dd>{formatDuration(course.duration)}</dd>
+					<dt>{CREATED}</dt>
+					<dd>{course.creationDate.replace(/\//g, '.')}</dd>
+				</dl>
 				<Button text={SHOW_COURSE} />
 			</CardBody>
 		</Card>
