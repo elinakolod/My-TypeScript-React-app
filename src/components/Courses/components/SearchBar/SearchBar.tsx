@@ -17,7 +17,6 @@ const SearchBar = ({ setCourses, courses }: SearchBarProps) => {
 	const [substring, setSubstring] = useState('');
 
 	const handleSearch = () => {
-		//debugger; // eslint-disable-line no-debugger
 		const fileteredCourses = courses.filter(
 			(course) =>
 				course.title.toLowerCase().includes(substring) ||
