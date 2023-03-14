@@ -18,11 +18,9 @@ const AuthorItem = ({
 }: AuthorProps) => (
 	<div className=''>
 		<span>{author.name}</span>
-		<Button
-			text={buttonText}
-			name={author.id}
-			handleButtonClick={handleAuthorItemClick}
-		/>
+		<Button name={author.id} onClick={handleAuthorItemClick}>
+			{buttonText}
+		</Button>
 	</div>
 );
 

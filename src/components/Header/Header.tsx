@@ -9,18 +9,13 @@ import Button from 'common/Button/Button';
 import { Navbar, NavbarBrand } from 'reactstrap';
 
 type HeaderProps = {
-	name: string;
-	auth: boolean;
-} & typeof defaultProps;
-
-const defaultProps = {
-	name: DEFAULT_NAME,
-	auth: false,
+	name?: string;
+	auth?: boolean;
 };
 
 const Header = ({ name, auth }: HeaderProps) => {
-	const [userName, setUserName] = useState(name);
-	const [isAuthorized, setIsAuthorized] = useState(auth);
+	const [userName, setUserName] = useState(name || DEFAULT_NAME);
+	const [isAuthorized, setIsAuthorized] = useState(auth || false);
 
 	const handleButtonClick = () => {
 		if (isAuthorized) {
@@ -36,15 +31,12 @@ const Header = ({ name, auth }: HeaderProps) => {
 			</NavbarBrand>
 			<span>
 				<span className={styles.userName}>{userName}</span>
-				<Button
-					handleButtonClick={handleButtonClick}
-					text={isAuthorized ? LOGOUT : LOGIN}
-				/>
+				<Button onClick={handleButtonClick}>
+					{isAuthorized ? LOGOUT : LOGIN}
+				</Button>
 			</span>
 		</Navbar>
 	);
 };
-
-Header.defaultProps = defaultProps;
 
 export default Header;

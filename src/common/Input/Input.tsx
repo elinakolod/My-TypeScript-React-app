@@ -1,35 +1,19 @@
-import React, { ChangeEvent } from 'react';
+import React from 'react';
 
-import { Label, Input as StrapInput } from 'reactstrap';
+import {
+	Label,
+	Input as StrapInput,
+	InputProps as StrapInputProps,
+} from 'reactstrap';
 
-type InputProps = {
-	labelText: string;
-	value?: string;
-	placeholder: string;
-	pattern?: string;
-	type?: 'text' | 'textarea';
-	handleChange?: (event: ChangeEvent<HTMLInputElement>) => void;
-};
+interface InputProps extends StrapInputProps {
+	labelText?: string;
+}
 
-const Input = ({
-	labelText,
-	value,
-	placeholder,
-	pattern,
-	type,
-	handleChange,
-}: InputProps) => (
-	<Label for='courseInput'>
+const Input = ({ labelText, ...props }: InputProps) => (
+	<Label>
 		{labelText}
-		<StrapInput
-			id='courseInput'
-			name={labelText.toLowerCase()}
-			value={value}
-			placeholder={placeholder}
-			pattern={pattern}
-			type={type}
-			onChange={handleChange}
-		/>
+		<StrapInput name={labelText.toLowerCase()} {...props} />
 	</Label>
 );
 

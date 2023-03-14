@@ -149,17 +149,13 @@ const CreateCourse = ({
 		<Form onSubmit={handleSubmit}>
 			<Row>
 				<span>
-					<Button
-						className={styles.createButton}
-						text={CREATE_COURSE}
-						type='submit'
-					/>
+					<Button className={styles.createButton}>{CREATE_COURSE}</Button>
 				</span>
 				<FormGroup>
 					<Input
 						labelText={TITLE}
 						placeholder={TITLE_PLACEHOLDER}
-						handleChange={handleChange}
+						onChange={handleChange}
 					/>
 				</FormGroup>
 				<FormGroup>
@@ -167,7 +163,7 @@ const CreateCourse = ({
 						labelText={DESCRIPTION}
 						placeholder={DESCR_PLACEHOLDER}
 						type='textarea'
-						handleChange={handleChange}
+						onChange={handleChange}
 					/>
 				</FormGroup>
 			</Row>
@@ -179,12 +175,9 @@ const CreateCourse = ({
 							labelText={AUTHOR_NAME}
 							value={authorName}
 							placeholder={AUTHOR_PLACEHOLDER}
-							handleChange={(event) => setAuthorName(event.target.value)}
+							onChange={(event) => setAuthorName(event.target.value)}
 						/>
-						<Button
-							text={CREATE_AUTHOR}
-							handleButtonClick={handleAuthorCreate}
-						/>
+						<Button onClick={handleAuthorCreate}>{CREATE_AUTHOR}</Button>
 					</FormGroup>
 					<FormGroup>
 						<h5>{DURATION}</h5>
@@ -192,8 +185,8 @@ const CreateCourse = ({
 							labelText={DURATION}
 							value={duration}
 							placeholder={DURATION_PLACEHOLDER}
-							handleChange={handleDuration}
-							pattern='[0-9]*'
+							onChange={handleDuration}
+							type='number'
 						/>
 					</FormGroup>
 					<h3>

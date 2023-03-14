@@ -1,38 +1,11 @@
-import React, { MouseEvent } from 'react';
+import React from 'react';
 
-import { Button as StrapButton } from 'reactstrap';
+import { Button as StrapButton, ButtonProps } from 'reactstrap';
 
-type ButtonProps = {
-	className?: string;
-	text: string;
-	type: 'button' | 'submit' | 'reset';
-	name?: string;
-	handleButtonClick?: (event: MouseEvent<HTMLButtonElement>) => void;
-} & typeof defaultProps;
-
-const defaultProps = {
-	text: '',
-	type: 'button',
-};
-
-const Button = ({
-	className,
-	text,
-	type,
-	name,
-	handleButtonClick,
-}: ButtonProps) => (
-	<StrapButton
-		className={className}
-		color='primary'
-		type={type}
-		name={name}
-		onClick={handleButtonClick}
-	>
-		{text}
+const Button = ({ children, ...props }: ButtonProps) => (
+	<StrapButton color='primary' {...props}>
+		{children}
 	</StrapButton>
 );
-
-Button.defaultProps = defaultProps;
 
 export default Button;

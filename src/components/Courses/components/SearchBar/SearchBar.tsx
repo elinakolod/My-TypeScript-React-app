@@ -38,9 +38,9 @@ const SearchBar = ({ setCourses, courses }: SearchBarProps) => {
 				labelText={SEARCH}
 				value={substring}
 				placeholder={SEARCH_PLACEHOLDER}
-				handleChange={handleChange}
+				onChange={handleChange}
 			/>
-			<Button text={SEARCH} handleButtonClick={handleSearch} />
+			<Button onClick={handleSearch}>{SEARCH}</Button>
 		</>
 	);
 };

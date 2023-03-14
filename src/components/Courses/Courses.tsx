@@ -54,11 +54,12 @@ const Courses = () => {
 					<span>
 						<Button
 							className={styles.addCourseButton}
-							text={ADD_COURSE}
-							handleButtonClick={() => {
+							onClick={() => {
 								setIsFormVisible(true);
 							}}
-						/>
+						>
+							{ADD_COURSE}
+						</Button>
 					</span>
 					<List type='unstyled'>
 						{coursesCards.map((card) => (

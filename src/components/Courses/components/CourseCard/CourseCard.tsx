@@ -33,7 +33,7 @@ const CourseCard = ({ course }: CourseProps) => {
 					<dt>{CREATED}</dt>
 					<dd>{course.creationDate.replace(/\//g, '.')}</dd>
 				</dl>
-				<Button text={SHOW_COURSE} />
+				<Button>{SHOW_COURSE}</Button>
 			</CardBody>
 		</Card>
 	);
