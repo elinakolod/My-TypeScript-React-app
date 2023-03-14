@@ -20,7 +20,7 @@ import {
 	COURSE_ERROR,
 	INVALID_SUMBOLS,
 	DEFAULT_HOURS,
-} from 'constants.js';
+} from 'constants/constants';
 
 import styles from './CreateCourse.module.css';
 
@@ -41,7 +41,7 @@ type NewCourseProps = {
 	allAuthors: Author[];
 };
 
-const defaultFields = {
+const formInputs = {
 	id: '',
 	title: '',
 	description: '',
@@ -62,14 +62,12 @@ const CreateCourse = ({
 	const [courseDuration, setCourseDuration] = useState(0);
 	const [duration, setDuration] = useState('');
 	const [formatedDuration, setformatedDuration] = useState(DEFAULT_HOURS);
-	const [courseDetails, setCourseDetails] = useState<Course>({
-		...defaultFields,
-	});
+	const [course, setCourse] = useState<Course>(formInputs);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
-		if (!INVALID_SUMBOLS.test(value) && value.length > 1) {
-			setCourseDetails((prevState) => {
+		if (!INVALID_SUMBOLS.test(value)) {
+			setCourse((prevState) => {
 				return {
 					...prevState,
 					[name]: value,
@@ -98,7 +96,7 @@ const CreateCourse = ({
 	};
 
 	const handleAuthorCreate = () => {
-		if (!INVALID_SUMBOLS.test(authorName) && authorName.length > 1) {
+		if (!INVALID_SUMBOLS.test(authorName)) {
 			setAuthors((prevState) => [
 				...prevState,
 				{ id: uuidv4(), name: authorName },
@@ -126,7 +124,7 @@ const CreateCourse = ({
 
 	const handleSubmit = (event) => {
 		const courseFields: Course = {
-			...courseDetails,
+			...course,
 			id: uuidv4(),
 			duration: courseDuration,
 			authors: courseAuthors.map((author) => author.id),
@@ -155,6 +153,7 @@ const CreateCourse = ({
 					<Input
 						labelText={TITLE}
 						placeholder={TITLE_PLACEHOLDER}
+						value={course.title}
 						onChange={handleChange}
 					/>
 				</FormGroup>
@@ -163,6 +162,7 @@ const CreateCourse = ({
 						labelText={DESCRIPTION}
 						placeholder={DESCR_PLACEHOLDER}
 						type='textarea'
+						value={course.description}
 						onChange={handleChange}
 					/>
 				</FormGroup>

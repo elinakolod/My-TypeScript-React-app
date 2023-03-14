@@ -1,35 +1,18 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
-import { SEARCH, SEARCH_PLACEHOLDER } from 'constants.js';
+import { SEARCH, SEARCH_PLACEHOLDER } from 'constants/constants';
 
-import Button from 'common/Button/Button';
 import Input from 'common/Input/Input';
 
-import { Course } from 'components/Courses/Course.types';
-
 type SearchBarProps = {
-	setCourses: Dispatch<SetStateAction<unknown>>;
-	courses: Course[];
+	setSubstring: Dispatch<SetStateAction<unknown>>;
+	substring: string;
 };
 
-const SearchBar = ({ setCourses, courses }: SearchBarProps) => {
-	const [allCourses, setAllCourses] = useState(courses);
-	const [substring, setSubstring] = useState('');
-
-	const handleSearch = () => {
-		const fileteredCourses = courses.filter(
-			(course) =>
-				course.title.toLowerCase().includes(substring) ||
-				course.id.toLowerCase().includes(substring)
-		);
-		setAllCourses(courses);
-		setCourses(fileteredCourses);
-	};
-
+const SearchBar = ({ setSubstring, substring }: SearchBarProps) => {
 	const handleChange = (event) => {
 		const userInput = event.target.value;
 		setSubstring(userInput.toLowerCase());
-		if (!userInput.length) setCourses(allCourses);
 	};
 
 	return (
@@ -40,7 +23,6 @@ const SearchBar = ({ setCourses, courses }: SearchBarProps) => {
 				placeholder={SEARCH_PLACEHOLDER}
 				onChange={handleChange}
 			/>
-			<Button onClick={handleSearch}>{SEARCH}</Button>
 		</>
 	);
 };

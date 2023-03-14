@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-import { DEFAULT_NAME, LOGIN, LOGOUT } from 'constants.js';
+import { DEFAULT_NAME, LOGIN, LOGOUT } from 'constants/constants';
 
 import styles from './Header.module.css';
 

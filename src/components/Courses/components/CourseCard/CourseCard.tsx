@@ -1,20 +1,16 @@
 import React from 'react';
 
-import { SHOW_COURSE, AUTORS, DURATION, CREATED } from 'constants.js';
+import { SHOW_COURSE, AUTORS, DURATION, CREATED } from 'constants/constants';
 
 import Button from 'common/Button/Button';
 import { Card, CardBody, CardTitle, CardText } from 'reactstrap';
 
 import formatDuration from 'helpers/formatDuration';
 
+import { Course } from 'components/Courses/Course.types';
+
 type CourseProps = {
-	course: {
-		title: string;
-		description: string;
-		creationDate: string;
-		duration: number;
-		authors: string[];
-	};
+	course: Course;
 };
 
 const CourseCard = ({ course }: CourseProps) => {

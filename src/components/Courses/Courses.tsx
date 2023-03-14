@@ -4,7 +4,7 @@ import {
 	mockedCoursesList,
 	mockedAuthorsList,
 	ADD_COURSE,
-} from '../../constants.js';
+} from 'constants/constants';
 
 import { List } from 'reactstrap';
 import Button from '../../common/Button/Button';
@@ -36,41 +36,48 @@ const Courses = () => {
 	const [isFormVisible, setIsFormVisible] = useState(false);
 	const [courses, setCourses] = useState(mockedCoursesList);
 	const [authors, setAuthors] = useState(mockedAuthorsList);
+	const [substring, setSubstring] = useState('');
 
 	const coursesCards = useMemo(() => formatCourses(), [courses]);
 
+	if (isFormVisible) {
+		return (
+			<CreateCourse
+				addCourse={setCourses}
+				addAuthor={setAuthors}
+				setIsFormVisible={setIsFormVisible}
+				allAuthors={authors}
+			/>
+		);
+	}
+
 	return (
-		<div className=''>
-			{isFormVisible ? (
-				<CreateCourse
-					addCourse={setCourses}
-					addAuthor={setAuthors}
-					setIsFormVisible={setIsFormVisible}
-					allAuthors={authors}
-				/>
-			) : (
-				<>
-					<SearchBar courses={coursesCards} setCourses={setCourses} />
-					<span>
-						<Button
-							className={styles.addCourseButton}
-							onClick={() => {
-								setIsFormVisible(true);
-							}}
-						>
-							{ADD_COURSE}
-						</Button>
-					</span>
-					<List type='unstyled'>
-						{coursesCards.map((card) => (
-							<li key={card.id}>
-								<CourseCard course={card} />
-							</li>
-						))}
-					</List>
-				</>
-			)}
-		</div>
+		<>
+			<SearchBar substring={substring} setSubstring={setSubstring} />
+			<span>
+				<Button
+					className={styles.addCourseButton}
+					onClick={() => {
+						setIsFormVisible(true);
+					}}
+				>
+					{ADD_COURSE}
+				</Button>
+			</span>
+			<List type='unstyled'>
+				{coursesCards
+					.filter(
+						(course) =>
+							course.title.toLowerCase().includes(substring) ||
+							course.id.toLowerCase().includes(substring)
+					)
+					.map((card) => (
+						<li key={card.id}>
+							<CourseCard course={card} />
+						</li>
+					))}
+			</List>
+		</>
 	);
 };
 

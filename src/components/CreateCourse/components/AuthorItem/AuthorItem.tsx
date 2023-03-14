@@ -2,11 +2,10 @@ import React, { MouseEvent } from 'react';
 
 import Button from 'common/Button/Button';
 
+import { Author } from 'components/Courses/Course.types';
+
 type AuthorProps = {
-	author: {
-		id: string;
-		name: string;
-	};
+	author: Author;
 	buttonText: string;
 	handleAuthorItemClick: (event: MouseEvent<HTMLButtonElement>) => void;
 };
