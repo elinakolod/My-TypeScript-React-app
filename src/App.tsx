@@ -1,16 +1,14 @@
 import Header from './components/Header/Header';
 import Courses from './components/Courses/Courses';
-import { Container, Row, Col } from 'reactstrap';
+import { Container } from 'reactstrap';
 
 function App() {
 	return (
-		<Container>
-			<Row>
-				<Header />
-				<Col className='bg-light border'>
-					<Courses />
-				</Col>
-			</Row>
+		<Container fluid>
+			<Header />
+			<Container className='bg-light border'>
+				<Courses />
+			</Container>
 		</Container>
 	);
 }

@@ -25,7 +25,7 @@ const Header = ({ name, auth }: HeaderProps) => {
 	};
 
 	return (
-		<Navbar className='my-2' color='secondary' dark>
+		<Navbar color='secondary' dark>
 			<NavbarBrand href='/'>
 				<Logo />
 			</NavbarBrand>

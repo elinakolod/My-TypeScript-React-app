@@ -16,7 +16,7 @@ const AuthorItem = ({
 	handleAuthorItemClick,
 }: AuthorProps) => (
 	<>
-		<span>{author.name}</span>
+		{author.name}
 		<Button name={author.id} onClick={handleAuthorItemClick}>
 			{buttonText}
 		</Button>

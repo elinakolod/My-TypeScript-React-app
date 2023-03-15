@@ -16,21 +16,14 @@ import styles from './Courses.module.css';
 
 const Courses = () => {
 	const formatCourses = () => {
-		return courses.map((course) => getAuthors(course));
-	};
-
-	const getAuthors = (course) => {
-		const courseAuthors = authors
-			.filter(
-				(author) =>
-					course.authors.includes(author.id) ||
-					course.authors.includes(author.name)
-			)
-			.map((author) => author.name);
-		return {
-			...course,
-			authors: courseAuthors,
-		};
+		return courses.map((course) => {
+			return {
+				...course,
+				authors: course.authors.map(
+					(authorId) => authors.find((author) => author.id === authorId).name
+				),
+			};
+		});
 	};
 
 	const [isFormVisible, setIsFormVisible] = useState(false);
@@ -54,16 +47,14 @@ const Courses = () => {
 	return (
 		<>
 			<SearchBar substring={substring} setSubstring={setSubstring} />
-			<span>
-				<Button
-					className={styles.addCourseButton}
-					onClick={() => {
-						setIsFormVisible(true);
-					}}
-				>
-					{ADD_COURSE}
-				</Button>
-			</span>
+			<Button
+				className={styles.addCourseButton}
+				onClick={() => {
+					setIsFormVisible(true);
+				}}
+			>
+				{ADD_COURSE}
+			</Button>
 			<List type='unstyled'>
 				{coursesCards
 					.filter(

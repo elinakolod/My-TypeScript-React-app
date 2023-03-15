@@ -27,7 +27,7 @@ import styles from './CreateCourse.module.css';
 import Button from 'common/Button/Button';
 import Input from 'common/Input/Input';
 import AuthorItem from './components/AuthorItem/AuthorItem';
-import { Form, Row, Col, FormGroup, List } from 'reactstrap';
+import { Form, Row, Col, FormGroup, List, Container } from 'reactstrap';
 
 import formatCreationDate from 'helpers/formatCreationDate.js';
 import formatDuration from 'helpers/formatDuration';
@@ -106,7 +106,7 @@ const CreateCourse = ({
 
 	const handleSubmit = (event) => {
 		if (
-			Object.values(course).every((input) => input.length) &&
+			Object.values(course).every((input) => !!input) &&
 			course.title.length > 1 &&
 			course.description.length > 1 &&
 			+course.duration > 0
@@ -126,10 +126,8 @@ const CreateCourse = ({
 
 	return (
 		<Form onSubmit={handleSubmit}>
-			<Row>
-				<span>
-					<Button className={styles.createButton}>{CREATE_COURSE}</Button>
-				</span>
+			<Container>
+				<Button className={styles.createButton}>{CREATE_COURSE}</Button>
 				<FormGroup>
 					<Input
 						labelText={TITLE}
@@ -147,7 +145,7 @@ const CreateCourse = ({
 						onChange={handleChange}
 					/>
 				</FormGroup>
-			</Row>
+			</Container>
 			<Row>
 				<Col md={6}>
 					<h5>{ADD_AUTHOR}</h5>
@@ -196,7 +194,7 @@ const CreateCourse = ({
 					<FormGroup>
 						<h5>{COURSE_AUTHORS}</h5>
 						{course.authors.length < 1 ? (
-							<span>{EMPTY_AUTHORS}</span>
+							<>{EMPTY_AUTHORS}</>
 						) : (
 							<List type='unstyled'>
 								{course.authors.map((author) => (
