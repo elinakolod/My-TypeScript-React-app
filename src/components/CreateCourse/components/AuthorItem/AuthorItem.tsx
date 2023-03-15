@@ -15,12 +15,12 @@ const AuthorItem = ({
 	buttonText,
 	handleAuthorItemClick,
 }: AuthorProps) => (
-	<div className=''>
+	<>
 		<span>{author.name}</span>
 		<Button name={author.id} onClick={handleAuthorItemClick}>
 			{buttonText}
 		</Button>
-	</div>
+	</>
 );
 
 export default AuthorItem;

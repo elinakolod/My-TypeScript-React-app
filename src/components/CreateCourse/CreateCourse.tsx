@@ -34,7 +34,7 @@ import formatDuration from 'helpers/formatDuration';
 
 import { Course, Author } from 'components/Courses/Course.types';
 
-type NewCourseProps = {
+type CourseFormProps = {
 	addCourse: Dispatch<SetStateAction<unknown>>;
 	addAuthor: Dispatch<SetStateAction<unknown>>;
 	setIsFormVisible: Dispatch<SetStateAction<unknown>>;
@@ -42,11 +42,11 @@ type NewCourseProps = {
 };
 
 const formInputs = {
-	id: '',
+	id: uuidv4(),
 	title: '',
 	description: '',
 	creationDate: formatCreationDate(),
-	duration: 0,
+	duration: '',
 	authors: [],
 };
 
@@ -55,14 +55,9 @@ const CreateCourse = ({
 	addAuthor,
 	setIsFormVisible,
 	allAuthors,
-}: NewCourseProps) => {
-	const [authors, setAuthors] = useState<Author[]>(allAuthors);
+}: CourseFormProps) => {
 	const [authorName, setAuthorName] = useState('');
-	const [courseAuthors, setCourseAuthors] = useState<Author[]>([]);
-	const [courseDuration, setCourseDuration] = useState(0);
-	const [duration, setDuration] = useState('');
-	const [formatedDuration, setformatedDuration] = useState(DEFAULT_HOURS);
-	const [course, setCourse] = useState<Course>(formInputs);
+	const [course, setCourse] = useState(formInputs);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -76,28 +71,19 @@ const CreateCourse = ({
 		}
 	};
 
-	const handleDuration = (event) => {
-		const value = event.target.value;
-		const duration = +value;
-		if (!isNaN(duration)) {
-			setCourseDuration(duration);
-			setDuration(value);
-			setformatedDuration(formatDuration(duration));
-		}
-	};
-
 	const handleAuthorDelete = (event) => {
 		const authorId = event.target.name;
-		setAuthors((prevState) => [
-			...prevState,
-			...courseAuthors.filter((author) => author.id === authorId),
-		]);
-		setCourseAuthors(courseAuthors.filter((author) => author.id != authorId));
+		setCourse((prevState) => {
+			return {
+				...prevState,
+				authors: prevState.authors.filter((author) => author.id !== authorId),
+			};
+		});
 	};
 
 	const handleAuthorCreate = () => {
 		if (!INVALID_SUMBOLS.test(authorName)) {
-			setAuthors((prevState) => [
+			addAuthor((prevState) => [
 				...prevState,
 				{ id: uuidv4(), name: authorName },
 			]);
@@ -107,38 +93,33 @@ const CreateCourse = ({
 
 	const handleAuthorAdd = (event) => {
 		const authorId = event.target.name;
-		setCourseAuthors((prevState) => [
-			...prevState,
-			...authors.filter((author) => author.id === authorId),
-		]);
-		setAuthors(authors.filter((author) => author.id != authorId));
-	};
-
-	const validateFields = (formFields: Course) => {
-		return Object.entries(formFields).filter(
-			([, value]) =>
-				(typeof value != 'number' && value.length > 0) ||
-				(typeof value === 'number' && value > 0)
-		);
+		setCourse((prevState) => {
+			return {
+				...prevState,
+				authors: [
+					...prevState.authors,
+					allAuthors.find((author) => author.id === authorId),
+				],
+			};
+		});
 	};
 
 	const handleSubmit = (event) => {
-		const courseFields: Course = {
-			...course,
-			id: uuidv4(),
-			duration: courseDuration,
-			authors: courseAuthors.map((author) => author.id),
-		};
-
-		if (validateFields(courseFields).length != 6) {
-			alert(COURSE_ERROR);
-		} else {
-			courseAuthors.forEach((author) => {
-				if (!allAuthors.includes(author))
-					addAuthor((prevState) => [...prevState, author]);
-			});
+		if (
+			Object.values(course).every((input) => input.length) &&
+			course.title.length > 1 &&
+			course.description.length > 1 &&
+			+course.duration > 0
+		) {
+			const courseFields: Course = {
+				...course,
+				duration: +course.duration,
+				authors: course.authors.map((author) => author.id),
+			};
 			addCourse((prevState) => [...prevState, courseFields]);
 			setIsFormVisible(false);
+		} else {
+			alert(COURSE_ERROR);
 		}
 		event.preventDefault();
 	};
@@ -183,38 +164,42 @@ const CreateCourse = ({
 						<h5>{DURATION}</h5>
 						<Input
 							labelText={DURATION}
-							value={duration}
+							value={course.duration.toString()}
 							placeholder={DURATION_PLACEHOLDER}
-							onChange={handleDuration}
+							onChange={handleChange}
 							type='number'
 						/>
 					</FormGroup>
 					<h3>
-						{DURATION}: {formatedDuration}
+						{DURATION}:{' '}
+						{course.duration ? formatDuration(course.duration) : DEFAULT_HOURS}
 					</h3>
 				</Col>
 				<Col md={6}>
 					<FormGroup>
 						<h5>{AUTHORS}</h5>
 						<List type='unstyled'>
-							{authors.map((author) => (
-								<li key={author.id}>
-									<AuthorItem
-										author={author}
-										buttonText={ADD_AUTHOR}
-										handleAuthorItemClick={handleAuthorAdd}
-									/>
-								</li>
-							))}
+							{allAuthors.map((author) => {
+								if (!course.authors.includes(author))
+									return (
+										<li key={author.id}>
+											<AuthorItem
+												author={author}
+												buttonText={ADD_AUTHOR}
+												handleAuthorItemClick={handleAuthorAdd}
+											/>
+										</li>
+									);
+							})}
 						</List>
 					</FormGroup>
 					<FormGroup>
 						<h5>{COURSE_AUTHORS}</h5>
-						{courseAuthors.length < 1 ? (
+						{course.authors.length < 1 ? (
 							<span>{EMPTY_AUTHORS}</span>
 						) : (
 							<List type='unstyled'>
-								{courseAuthors.map((author) => (
+								{course.authors.map((author) => (
 									<li key={author.id}>
 										<AuthorItem
 											author={author}
