@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
-import { DEFAULT_NAME, LOGIN, LOGOUT } from 'constants/constants';
+import { LOGOUT } from 'constants/constants';
 
 import styles from './Header.module.css';
 
@@ -8,32 +8,33 @@ import Logo from './components/Logo/Logo';
 import Button from 'common/Button/Button';
 import { Navbar, NavbarBrand } from 'reactstrap';
 
-type HeaderProps = {
-	name?: string;
-	auth?: boolean;
-};
-
-const Header = ({ name, auth }: HeaderProps) => {
-	const [userName, setUserName] = useState(name || DEFAULT_NAME);
-	const [isAuthorized, setIsAuthorized] = useState(auth || false);
+const Header = () => {
+	const navigate = useNavigate();
+	const location = useLocation();
 
 	const handleButtonClick = () => {
-		if (isAuthorized) {
-			setIsAuthorized(false);
-			setUserName(DEFAULT_NAME);
+		if (localStorage.getItem('token')) {
+			localStorage.clear();
+			navigate('/login');
 		}
 	};
 
 	return (
 		<Navbar color='secondary' dark>
-			<NavbarBrand href='/'>
+			<NavbarBrand href='/courses'>
 				<Logo />
 			</NavbarBrand>
 			<span>
-				<span className={styles.userName}>{userName}</span>
-				<Button onClick={handleButtonClick}>
-					{isAuthorized ? LOGOUT : LOGIN}
-				</Button>
+				{!['login', 'registration'].includes(
+					location.pathname.replace('/', '')
+				) && (
+					<>
+						<span className={styles.userName}>
+							{localStorage.getItem('user')}
+						</span>
+						<Button onClick={handleButtonClick}>{LOGOUT}</Button>
+					</>
+				)}
 			</span>
 		</Navbar>
 	);

@@ -48,9 +48,9 @@ export const mockedAuthorsList = [
 	},
 ];
 
+export const ID = 'ID';
 export const INVALID_SUMBOLS = /[@#$%^&]/;
 export const DEFAULT_HOURS = '00:00 hours';
-export const DEFAULT_NAME = 'Guest';
 export const LOGIN = 'Login';
 export const LOGOUT = 'Logout';
 export const SHOW_COURSE = 'Show course';
@@ -75,3 +75,13 @@ export const AUTHOR_PLACEHOLDER = 'Enter author name...';
 export const COURSE_ERROR = 'Please, fill in all fields';
 export const SEARCH = 'Search';
 export const SEARCH_PLACEHOLDER = 'Enter course name...';
+export const BACK = '< Back to courses';
+export const NAME = 'Name';
+export const EMAIL = 'Email';
+export const PASSWORD = 'Password';
+export const NAME_PLACEHOLDER = 'Enter name';
+export const EMAIL_PLACEHOLDER = 'Enter email';
+export const PASSWORD_PLACEHOLDER = 'Enter password';
+export const REGISTRATION = 'Registration';
+export const REG_NOTICE = 'If you have an account you can ';
+export const LOGIN_NOTICE = "If you don't have an account you can ";

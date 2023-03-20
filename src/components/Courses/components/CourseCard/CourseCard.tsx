@@ -1,4 +1,4 @@
-import React from 'react';
+import { Link } from 'react-router-dom';
 
 import { SHOW_COURSE, AUTORS, DURATION, CREATED } from 'constants/constants';
 
@@ -29,7 +29,11 @@ const CourseCard = ({ course }: CourseProps) => {
 					<dt>{CREATED}</dt>
 					<dd>{course.creationDate.replace(/\//g, '.')}</dd>
 				</dl>
-				<Button>{SHOW_COURSE}</Button>
+				<Button>
+					<Link to={course.id} state={course}>
+						{SHOW_COURSE}
+					</Link>
+				</Button>
 			</CardBody>
 		</Card>
 	);

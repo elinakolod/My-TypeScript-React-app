@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
+import { Outlet, useParams, Link } from 'react-router-dom';
 
 import {
 	mockedCoursesList,
@@ -7,7 +8,7 @@ import {
 } from 'constants/constants';
 
 import { List } from 'reactstrap';
-import Button from '../../common/Button/Button';
+import Button from 'common/Button/Button';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
 import CreateCourse from '../CreateCourse/CreateCourse';
@@ -30,6 +31,7 @@ const Courses = () => {
 	const [courses, setCourses] = useState(mockedCoursesList);
 	const [authors, setAuthors] = useState(mockedAuthorsList);
 	const [substring, setSubstring] = useState('');
+	const params = useParams();
 
 	const coursesCards = useMemo(() => formatCourses(), [courses]);
 
@@ -49,25 +51,28 @@ const Courses = () => {
 			<SearchBar substring={substring} setSubstring={setSubstring} />
 			<Button
 				className={styles.addCourseButton}
-				onClick={() => {
-					setIsFormVisible(true);
-				}}
+				onClick={() => setIsFormVisible(true)}
 			>
-				{ADD_COURSE}
+				<Link to='add'>{ADD_COURSE}</Link>
 			</Button>
-			<List type='unstyled'>
-				{coursesCards
-					.filter(
-						(course) =>
-							course.title.toLowerCase().includes(substring) ||
-							course.id.toLowerCase().includes(substring)
-					)
-					.map((card) => (
-						<li key={card.id}>
-							<CourseCard course={card} />
-						</li>
-					))}
-			</List>
+			{params.courseId ? (
+				<Outlet />
+			) : (
+				<List type='unstyled'>
+					{params.courseId ||
+						coursesCards
+							.filter(
+								(course) =>
+									course.title.toLowerCase().includes(substring) ||
+									course.id.toLowerCase().includes(substring)
+							)
+							.map((card) => (
+								<li key={card.id}>
+									<CourseCard course={card} />
+								</li>
+							))}
+				</List>
+			)}
 		</>
 	);
 };

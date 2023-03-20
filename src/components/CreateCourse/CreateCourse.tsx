@@ -1,4 +1,5 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -58,6 +59,7 @@ const CreateCourse = ({
 }: CourseFormProps) => {
 	const [authorName, setAuthorName] = useState('');
 	const [course, setCourse] = useState(formInputs);
+	const navigate = useNavigate();
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -118,6 +120,7 @@ const CreateCourse = ({
 			};
 			addCourse((prevState) => [...prevState, courseFields]);
 			setIsFormVisible(false);
+			navigate('/courses');
 		} else {
 			alert(COURSE_ERROR);
 		}
