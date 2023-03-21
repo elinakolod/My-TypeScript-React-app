@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 import { SHOW_COURSE, AUTORS, DURATION, CREATED } from 'constants/constants';
@@ -14,23 +15,32 @@ type CourseProps = {
 };
 
 const CourseCard = ({ course }: CourseProps) => {
+	const courseCard = useMemo(() => {
+		return {
+			...course,
+			duration: formatDuration(course.duration),
+			creationDate: course.creationDate.replace(/\//g, '.'),
+			authors: course.authors.join(', '),
+		};
+	}, [course]);
+
 	return (
 		<Card className='my-2'>
 			<CardBody>
-				<CardTitle tag='h2'>{course.title}</CardTitle>
-				<CardText>{course.description}</CardText>
+				<CardTitle tag='h2'>{courseCard.title}</CardTitle>
+				<CardText>{courseCard.description}</CardText>
 			</CardBody>
 			<CardBody>
 				<dl>
 					<dt>{AUTORS}</dt>
-					<dd>{course.authors.join(', ')}</dd>
+					<dd>{courseCard.authors}</dd>
 					<dt>{DURATION}</dt>
-					<dd>{formatDuration(course.duration)}</dd>
+					<dd>{courseCard.duration}</dd>
 					<dt>{CREATED}</dt>
-					<dd>{course.creationDate.replace(/\//g, '.')}</dd>
+					<dd>{courseCard.creationDate}</dd>
 				</dl>
 				<Button>
-					<Link to={course.id} state={course}>
+					<Link to={course.id} state={courseCard}>
 						{SHOW_COURSE}
 					</Link>
 				</Button>

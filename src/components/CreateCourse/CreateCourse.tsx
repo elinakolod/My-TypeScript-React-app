@@ -30,7 +30,7 @@ import Input from 'common/Input/Input';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import { Form, Row, Col, FormGroup, List, Container } from 'reactstrap';
 
-import formatCreationDate from 'helpers/formatCreationDate.js';
+import formatCreationDate from 'helpers/formatCreationDate';
 import formatDuration from 'helpers/formatDuration';
 
 import { Course, Author } from 'components/Courses/Course.types';
@@ -173,7 +173,7 @@ const CreateCourse = ({
 					</FormGroup>
 					<h3>
 						{DURATION}:{' '}
-						{course.duration ? formatDuration(course.duration) : DEFAULT_HOURS}
+						{course.duration ? formatDuration(+course.duration) : DEFAULT_HOURS}
 					</h3>
 				</Col>
 				<Col md={6}>

@@ -1,6 +1,6 @@
 import prettifyNumbers from './prettifyNumbers';
 
-const formatCreationDate = () => {
+const formatCreationDate = (): string => {
 	const date = new Date();
 	return `${prettifyNumbers(date.getDate())}/${prettifyNumbers(
 		date.getMonth() + 1

@@ -13,8 +13,10 @@ import {
 
 import formatDuration from 'helpers/formatDuration';
 
-import { Row, Col, List, Container } from 'reactstrap';
+import { Row, Col, Container } from 'reactstrap';
 import Button from 'common/Button/Button';
+
+import styles from '../../Courses.module.css';
 
 const CourseInfo = () => {
 	const params = useParams();
@@ -28,9 +30,13 @@ const CourseInfo = () => {
 		);
 		return {
 			...courseItem,
-			authors: courseItem.authors.map((authorId) =>
-				mockedAuthorsList.find((author) => author.id === authorId)
-			),
+			duration: formatDuration(course.duration),
+			creationDate: course.creationDate.replace(/\//g, '.'),
+			authors: courseItem.authors
+				.map((authorId) =>
+					mockedAuthorsList.find((author) => author.id === authorId)
+				)
+				.join(', '),
 		};
 	};
 
@@ -39,7 +45,7 @@ const CourseInfo = () => {
 			<Button color='link' onClick={() => navigate(-1)}>
 				{BACK}
 			</Button>
-			<h2>{course.title}</h2>
+			<h2 className={styles.courseInfoTitle}>{course.title}</h2>
 			<Row>
 				<Col md={6}>{course.description}</Col>
 				<Col md={6}>
@@ -47,17 +53,11 @@ const CourseInfo = () => {
 						<dt>{ID}</dt>
 						<dd>{course.id}</dd>
 						<dt>{DURATION}</dt>
-						<dd>{formatDuration(course.duration)}</dd>
+						<dd>{course.duration}</dd>
 						<dt>{CREATED}</dt>
-						<dd>{course.creationDate?.replace(/\//g, '.')}</dd>
+						<dd>{course.creationDate}</dd>
 						<dt>{AUTHORS}</dt>
-						<dd>
-							<List type='unstyled'>
-								{course.authors.map((author) => (
-									<li key={author.id}>{author.name}</li>
-								))}
-							</List>
-						</dd>
+						<dd>{course.authors}</dd>
 					</dl>
 				</Col>
 			</Row>

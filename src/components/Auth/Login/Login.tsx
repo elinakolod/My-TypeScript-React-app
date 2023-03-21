@@ -12,7 +12,7 @@ import {
 	LOGIN,
 } from 'constants/constants';
 
-import { Container, Form, FormGroup } from 'reactstrap';
+import { Container, Form, FormGroup, Alert } from 'reactstrap';
 import Input from 'common/Input/Input';
 import Button from 'common/Button/Button';
 
@@ -27,6 +27,7 @@ const formInputs: User = {
 
 const Login = () => {
 	const [user, setUser] = useState(formInputs);
+	const [error, setError] = useState();
 	const navigate = useNavigate();
 
 	const handleChange = (event) => {
@@ -51,12 +52,13 @@ const Login = () => {
 			localStorage.setItem('user', response.data.user.name);
 			navigate('/courses');
 		} catch (error) {
-			alert(error.response.data.errors.join('\n'));
+			setError(error.response.data.errors);
 		}
 	};
 
 	return (
 		<Container className={styles.authForm}>
+			{error && <Alert color='danger'>{error}</Alert>}
 			<h2>{LOGIN}</h2>
 			<Form onSubmit={handleSubmit}>
 				<FormGroup>

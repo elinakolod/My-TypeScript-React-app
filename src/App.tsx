@@ -6,7 +6,6 @@ import CourseInfo from './components/Courses/components/CourseInfo/CourseInfo';
 import Registration from './components/Auth/Registration/Registration';
 import Login from './components/Auth/Login/Login';
 import ProtectedRoute from 'common/ProtectedRoute/ProtectedRoute';
-
 import { Container } from 'reactstrap';
 
 function App() {
