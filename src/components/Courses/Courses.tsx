@@ -21,7 +21,8 @@ const Courses = () => {
 			return {
 				...course,
 				authors: course.authors.map(
-					(authorId) => authors.find((author) => author.id === authorId).name
+					(authorId) =>
+						authors.find((author) => author.id === authorId).name
 				),
 			};
 		});
@@ -63,7 +64,9 @@ const Courses = () => {
 						coursesCards
 							.filter(
 								(course) =>
-									course.title.toLowerCase().includes(substring) ||
+									course.title
+										.toLowerCase()
+										.includes(substring) ||
 									course.id.toLowerCase().includes(substring)
 							)
 							.map((card) => (
