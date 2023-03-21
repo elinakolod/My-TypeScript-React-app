@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import { useState, useMemo } from 'react';
 
 import {
 	mockedCoursesList,
@@ -20,7 +20,8 @@ const Courses = () => {
 			return {
 				...course,
 				authors: course.authors.map(
-					(authorId) => authors.find((author) => author.id === authorId).name
+					(authorId) =>
+						authors.find((author) => author.id === authorId).name
 				),
 			};
 		});

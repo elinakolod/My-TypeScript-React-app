@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 import { SEARCH, SEARCH_PLACEHOLDER } from 'constants/constants';
 
@@ -16,14 +16,12 @@ const SearchBar = ({ setSubstring, substring }: SearchBarProps) => {
 	};
 
 	return (
-		<>
-			<Input
-				labelText={SEARCH}
-				value={substring}
-				placeholder={SEARCH_PLACEHOLDER}
-				onChange={handleChange}
-			/>
-		</>
+		<Input
+			labelText={SEARCH}
+			value={substring}
+			placeholder={SEARCH_PLACEHOLDER}
+			onChange={handleChange}
+		/>
 	);
 };
 

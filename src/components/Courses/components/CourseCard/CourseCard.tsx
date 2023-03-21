@@ -1,5 +1,3 @@
-import React from 'react';
-
 import { SHOW_COURSE, AUTORS, DURATION, CREATED } from 'constants/constants';
 
 import Button from 'common/Button/Button';

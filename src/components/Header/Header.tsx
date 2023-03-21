@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { DEFAULT_NAME, LOGIN, LOGOUT } from 'constants/constants';
 

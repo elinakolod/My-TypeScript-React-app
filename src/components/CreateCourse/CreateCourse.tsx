@@ -1,4 +1,4 @@
-import React, { useState, Dispatch, SetStateAction } from 'react';
+import { useState, Dispatch, SetStateAction } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -76,7 +76,9 @@ const CreateCourse = ({
 		setCourse((prevState) => {
 			return {
 				...prevState,
-				authors: prevState.authors.filter((author) => author.id !== authorId),
+				authors: prevState.authors.filter(
+					(author) => author.id !== authorId
+				),
 			};
 		});
 	};
@@ -106,7 +108,7 @@ const CreateCourse = ({
 
 	const handleSubmit = (event) => {
 		if (
-			Object.values(course).every((input) => !!input) &&
+			course.authors.length &&
 			course.title.length > 1 &&
 			course.description.length > 1 &&
 			+course.duration > 0
@@ -154,9 +156,13 @@ const CreateCourse = ({
 							labelText={AUTHOR_NAME}
 							value={authorName}
 							placeholder={AUTHOR_PLACEHOLDER}
-							onChange={(event) => setAuthorName(event.target.value)}
+							onChange={(event) =>
+								setAuthorName(event.target.value)
+							}
 						/>
-						<Button onClick={handleAuthorCreate}>{CREATE_AUTHOR}</Button>
+						<Button onClick={handleAuthorCreate}>
+							{CREATE_AUTHOR}
+						</Button>
 					</FormGroup>
 					<FormGroup>
 						<h5>{DURATION}</h5>
@@ -170,31 +176,39 @@ const CreateCourse = ({
 					</FormGroup>
 					<h3>
 						{DURATION}:{' '}
-						{course.duration ? formatDuration(course.duration) : DEFAULT_HOURS}
+						{course.duration
+							? formatDuration(course.duration)
+							: DEFAULT_HOURS}
 					</h3>
 				</Col>
 				<Col md={6}>
 					<FormGroup>
 						<h5>{AUTHORS}</h5>
-						<List type='unstyled'>
-							{allAuthors.map((author) => {
-								if (!course.authors.includes(author))
-									return (
-										<li key={author.id}>
-											<AuthorItem
-												author={author}
-												buttonText={ADD_AUTHOR}
-												handleAuthorItemClick={handleAuthorAdd}
-											/>
-										</li>
-									);
-							})}
-						</List>
+						{allAuthors.length < 1 ? (
+							EMPTY_AUTHORS
+						) : (
+							<List type='unstyled'>
+								{allAuthors.map((author) => {
+									if (!course.authors.includes(author))
+										return (
+											<li key={author.id}>
+												<AuthorItem
+													author={author}
+													buttonText={ADD_AUTHOR}
+													handleAuthorItemClick={
+														handleAuthorAdd
+													}
+												/>
+											</li>
+										);
+								})}
+							</List>
+						)}
 					</FormGroup>
 					<FormGroup>
 						<h5>{COURSE_AUTHORS}</h5>
 						{course.authors.length < 1 ? (
-							<>{EMPTY_AUTHORS}</>
+							EMPTY_AUTHORS
 						) : (
 							<List type='unstyled'>
 								{course.authors.map((author) => (
@@ -202,7 +216,9 @@ const CreateCourse = ({
 										<AuthorItem
 											author={author}
 											buttonText={DELETE_AUTHOR}
-											handleAuthorItemClick={handleAuthorDelete}
+											handleAuthorItemClick={
+												handleAuthorDelete
+											}
 										/>
 									</li>
 								))}
