@@ -6,15 +6,17 @@ import Login from './components/Auth/Login/Login';
 import CoursesList from './components/Courses/CoursesList';
 import App from './App';
 
+import Path from 'constants/Path';
+
 function Router() {
 	const router = useRoutes([
 		{
 			element: <App />,
 			children: [
-				{ path: 'registration', element: <Registration /> },
-				{ path: 'login', element: <Login /> },
+				{ path: Path.registration, element: <Registration /> },
+				{ path: Path.login, element: <Login /> },
 				{
-					path: 'courses/*',
+					path: `${Path.course.index}/*`,
 					element: (
 						<ProtectedRoute>
 							<CoursesList />
@@ -25,7 +27,7 @@ function Router() {
 		},
 		{
 			path: '/',
-			element: <Navigate to='/courses' />,
+			element: <Navigate to={`/${Path.course.index}`} />,
 		},
 	]);
 

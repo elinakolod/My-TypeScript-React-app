@@ -7,6 +7,7 @@ import ProtectedRoute from 'common/ProtectedRoute/ProtectedRoute';
 import CreateCourse from 'components/CreateCourse/CreateCourse';
 
 import { mockedCoursesList, mockedAuthorsList } from 'constants/constants';
+import Path from 'constants/Path';
 
 function CoursesList() {
 	const [courses, setCourses] = useState(mockedCoursesList);
@@ -39,7 +40,7 @@ function CoursesList() {
 					}
 				/>
 				<Route
-					path='add'
+					path={Path.course.new}
 					element={
 						<ProtectedRoute>
 							<CreateCourse

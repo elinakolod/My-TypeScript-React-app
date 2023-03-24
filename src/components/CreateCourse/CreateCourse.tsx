@@ -22,6 +22,7 @@ import {
 	INVALID_SUMBOLS,
 	DEFAULT_HOURS,
 } from 'constants/constants';
+import Path from 'constants/Path';
 
 import styles from './CreateCourse.module.css';
 
@@ -119,7 +120,7 @@ const CreateCourse = ({
 				authors: course.authors.map((author) => author.id),
 			};
 			addCourse((prevState) => [...prevState, courseFields]);
-			navigate('/courses');
+			navigate(`/${Path.course.index}`);
 		} else {
 			alert(COURSE_ERROR);
 		}

@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { ADD_COURSE } from 'constants/constants';
+import Path from 'constants/Path';
 
 import { List } from 'reactstrap';
 import Button from 'common/Button/Button';
@@ -23,7 +24,7 @@ const Courses = ({ courses }: CoursesProps) => {
 		<>
 			<SearchBar substring={substring} setSubstring={setSubstring} />
 			<Button className={styles.addCourseButton}>
-				<Link to='add'>{ADD_COURSE}</Link>
+				<Link to={Path.course.new}>{ADD_COURSE}</Link>
 			</Button>
 			<List type='unstyled'>
 				{courses
