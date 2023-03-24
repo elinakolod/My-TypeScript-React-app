@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from 'utils/api';
 
 import {
 	EMAIL,
@@ -11,6 +11,7 @@ import {
 	LOGIN_NOTICE,
 	LOGIN,
 } from 'constants/constants';
+import Path from 'constants/Path';
 
 import { Container, Form, FormGroup, Alert } from 'reactstrap';
 import Input from 'common/Input/Input';
@@ -47,10 +48,10 @@ const Login = () => {
 
 	const loginUser = async () => {
 		try {
-			const response = await axios.post('http://localhost:4000/login', user);
-			localStorage.setItem('token', response.data.result);
-			localStorage.setItem('user', response.data.user.name);
-			navigate('/courses');
+			const response = await api.auth.login(user);
+			localStorage.setItem('token', response.result);
+			localStorage.setItem('user', response.user.name);
+			navigate(`/${Path.course.index}`);
 		} catch (error) {
 			setError(error.response.data.errors);
 		}
@@ -81,7 +82,7 @@ const Login = () => {
 				<Button color='success'>{LOGIN}</Button>
 			</Form>
 			{LOGIN_NOTICE}
-			<Link to='/registration'> {REGISTRATION}</Link>
+			<Link to={`/${Path.registration}`}> {REGISTRATION}</Link>
 		</Container>
 	);
 };

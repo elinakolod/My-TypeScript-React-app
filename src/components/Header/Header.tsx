@@ -1,6 +1,7 @@
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { LOGOUT } from 'constants/constants';
+import Path from 'constants/Path';
 
 import styles from './Header.module.css';
 
@@ -15,17 +16,17 @@ const Header = () => {
 	const handleButtonClick = () => {
 		if (localStorage.getItem('token')) {
 			localStorage.clear();
-			navigate('/login');
+			navigate(`/${Path.login}`);
 		}
 	};
 
 	return (
 		<Navbar color='secondary' dark>
-			<NavbarBrand href='/courses'>
+			<NavbarBrand href={`/${Path.course.index}`}>
 				<Logo />
 			</NavbarBrand>
 			<span>
-				{!['login', 'registration'].includes(
+				{![Path.login, Path.registration].includes(
 					location.pathname.replace('/', '')
 				) && (
 					<>

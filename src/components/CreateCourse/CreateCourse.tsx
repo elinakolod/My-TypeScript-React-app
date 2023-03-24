@@ -22,6 +22,7 @@ import {
 	INVALID_SUMBOLS,
 	DEFAULT_HOURS,
 } from 'constants/constants';
+import Path from 'constants/Path';
 
 import styles from './CreateCourse.module.css';
 
@@ -38,7 +39,6 @@ import { Course, Author } from 'components/Courses/Course.types';
 type CourseFormProps = {
 	addCourse: Dispatch<SetStateAction<unknown>>;
 	addAuthor: Dispatch<SetStateAction<unknown>>;
-	setIsFormVisible: Dispatch<SetStateAction<unknown>>;
 	allAuthors: Author[];
 };
 
@@ -54,7 +54,6 @@ const formInputs = {
 const CreateCourse = ({
 	addCourse,
 	addAuthor,
-	setIsFormVisible,
 	allAuthors,
 }: CourseFormProps) => {
 	const [authorName, setAuthorName] = useState('');
@@ -121,8 +120,7 @@ const CreateCourse = ({
 				authors: course.authors.map((author) => author.id),
 			};
 			addCourse((prevState) => [...prevState, courseFields]);
-			setIsFormVisible(false);
-			navigate('/courses');
+			navigate(`/${Path.course.index}`);
 		} else {
 			alert(COURSE_ERROR);
 		}

@@ -2,12 +2,7 @@
   float: right;
 }
 
-button a{
-  color: white;
-  text-decoration: none;
-}
-
-button a:hover{
+button a, button a:hover{
   color: white;
   text-decoration: none;
 }

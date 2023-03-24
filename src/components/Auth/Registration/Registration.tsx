@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import axios from 'axios';
+import api from 'utils/api';
 
 import {
 	NAME,
@@ -13,6 +13,7 @@ import {
 	REG_NOTICE,
 	LOGIN,
 } from 'constants/constants';
+import Path from 'constants/Path';
 
 import { Container, Form, FormGroup, Alert } from 'reactstrap';
 import Input from 'common/Input/Input';
@@ -50,8 +51,8 @@ const Registration = () => {
 
 	const registerUser = async () => {
 		try {
-			await axios.post('http://localhost:4000/register', user);
-			navigate('/login');
+			await api.auth.register(user);
+			navigate(`/${Path.login}`);
 		} catch (error) {
 			setError(error.response.data.errors);
 		}
@@ -90,7 +91,7 @@ const Registration = () => {
 				<Button color='success'>{REGISTRATION}</Button>
 			</Form>
 			{REG_NOTICE}
-			<Link to='/login'> {LOGIN}</Link>
+			<Link to={`/${Path.login}`}> {LOGIN}</Link>
 		</Container>
 	);
 };

@@ -1,81 +1,44 @@
-import { useState, useMemo } from 'react';
-import { Outlet, useParams, Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import {
-	mockedCoursesList,
-	mockedAuthorsList,
-	ADD_COURSE,
-} from 'constants/constants';
+import { ADD_COURSE } from 'constants/constants';
+import Path from 'constants/Path';
 
 import { List } from 'reactstrap';
 import Button from 'common/Button/Button';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
-import CreateCourse from '../CreateCourse/CreateCourse';
 
 import styles from './Courses.module.css';
 
-const Courses = () => {
-	const formatCourses = () => {
-		return courses.map((course) => {
-			return {
-				...course,
-				authors: course.authors.map(
-					(authorId) =>
-						authors.find((author) => author.id === authorId).name
-				),
-			};
-		});
-	};
+import { Course } from 'components/Courses/Course.types';
 
-	const [isFormVisible, setIsFormVisible] = useState(false);
-	const [courses, setCourses] = useState(mockedCoursesList);
-	const [authors, setAuthors] = useState(mockedAuthorsList);
+type CoursesProps = {
+	courses: Course[];
+};
+
+const Courses = ({ courses }: CoursesProps) => {
 	const [substring, setSubstring] = useState('');
-	const params = useParams();
-
-	const coursesCards = useMemo(() => formatCourses(), [courses]);
-
-	if (isFormVisible) {
-		return (
-			<CreateCourse
-				addCourse={setCourses}
-				addAuthor={setAuthors}
-				setIsFormVisible={setIsFormVisible}
-				allAuthors={authors}
-			/>
-		);
-	}
 
 	return (
 		<>
 			<SearchBar substring={substring} setSubstring={setSubstring} />
-			<Button
-				className={styles.addCourseButton}
-				onClick={() => setIsFormVisible(true)}
-			>
-				<Link to='add'>{ADD_COURSE}</Link>
+			<Button className={styles.addCourseButton}>
+				<Link to={Path.course.new}>{ADD_COURSE}</Link>
 			</Button>
-			{params.courseId ? (
-				<Outlet />
-			) : (
-				<List type='unstyled'>
-					{params.courseId ||
-						coursesCards
-							.filter(
-								(course) =>
-									course.title
-										.toLowerCase()
-										.includes(substring) ||
-									course.id.toLowerCase().includes(substring)
-							)
-							.map((card) => (
-								<li key={card.id}>
-									<CourseCard course={card} />
-								</li>
-							))}
-				</List>
-			)}
+			<List type='unstyled'>
+				{courses
+					.filter(
+						(course) =>
+							course.title.toLowerCase().includes(substring) ||
+							course.id.toLowerCase().includes(substring)
+					)
+					.map((card) => (
+						<li key={card.id}>
+							<CourseCard course={card} />
+						</li>
+					))}
+			</List>
 		</>
 	);
 };

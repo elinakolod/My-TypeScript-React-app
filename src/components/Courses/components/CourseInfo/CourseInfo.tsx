@@ -1,15 +1,7 @@
-import { useMemo } from 'react';
-import { useParams, useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useState } from 'react';
 
-import {
-	BACK,
-	AUTHORS,
-	DURATION,
-	CREATED,
-	ID,
-	mockedCoursesList,
-	mockedAuthorsList,
-} from 'constants/constants';
+import { BACK, AUTHORS, DURATION, CREATED, ID } from 'constants/constants';
 
 import formatDuration from 'helpers/formatDuration';
 
@@ -18,27 +10,17 @@ import Button from 'common/Button/Button';
 
 import styles from '../../Courses.module.css';
 
-const CourseInfo = () => {
-	const params = useParams();
-	const navigate = useNavigate();
-	const { state } = useLocation();
-	const course = state || useMemo(() => formatCourse(), [params.courseId]);
+import { Course } from 'components/Courses/Course.types';
 
-	const formatCourse = () => {
-		const courseItem = mockedCoursesList.find(
-			(course) => course.id === params.courseId
-		);
-		return {
-			...courseItem,
-			duration: formatDuration(course.duration),
-			creationDate: course.creationDate.replace(/\//g, '.'),
-			authors: courseItem.authors
-				.map((authorId) =>
-					mockedAuthorsList.find((author) => author.id === authorId)
-				)
-				.join(', '),
-		};
-	};
+type CourseProps = {
+	courses: Course[];
+};
+const CourseInfo = ({ courses }: CourseProps) => {
+	const navigate = useNavigate();
+	const params = useParams();
+	const [course] = useState(
+		courses.find((course) => course.id === params.courseId)
+	);
 
 	return (
 		<Container>
@@ -53,11 +35,11 @@ const CourseInfo = () => {
 						<dt>{ID}</dt>
 						<dd>{course.id}</dd>
 						<dt>{DURATION}</dt>
-						<dd>{course.duration}</dd>
+						<dd>{formatDuration(course.duration)}</dd>
 						<dt>{CREATED}</dt>
-						<dd>{course.creationDate}</dd>
+						<dd>{course.creationDate.replace(/\//g, '.')}</dd>
 						<dt>{AUTHORS}</dt>
-						<dd>{course.authors}</dd>
+						<dd>{course.authors.join(', ')}</dd>
 					</dl>
 				</Col>
 			</Row>
