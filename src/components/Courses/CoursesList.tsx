@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useState, useMemo } from 'react';
 
 import CourseInfo from './components/CourseInfo/CourseInfo';
@@ -18,8 +18,7 @@ function CoursesList() {
 			return {
 				...course,
 				authors: course.authors.map(
-					(authorId) =>
-						authors.find((author) => author.id === authorId).name
+					(authorId) => authors.find((author) => author.id === authorId).name
 				),
 			};
 		});

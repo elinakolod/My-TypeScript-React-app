@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
 
 import { BACK, AUTHORS, DURATION, CREATED, ID } from 'constants/constants';
 
