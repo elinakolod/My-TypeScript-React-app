@@ -29,29 +29,27 @@ function CoursesList() {
 
 	return (
 		<Routes>
-			<Route element={<Outlet />}>
-				<Route path='/' element={<Courses courses={coursesCards} />} />
-				<Route
-					path=':courseId'
-					element={
-						<ProtectedRoute>
-							<CourseInfo courses={coursesCards} />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					path={Path.course.new}
-					element={
-						<ProtectedRoute>
-							<CreateCourse
-								addCourse={setCourses}
-								addAuthor={setAuthors}
-								allAuthors={authors}
-							/>
-						</ProtectedRoute>
-					}
-				/>
-			</Route>
+			<Route path='/' element={<Courses courses={coursesCards} />} />
+			<Route
+				path=':courseId'
+				element={
+					<ProtectedRoute>
+						<CourseInfo courses={coursesCards} />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path={Path.course.new}
+				element={
+					<ProtectedRoute>
+						<CreateCourse
+							addCourse={setCourses}
+							addAuthor={setAuthors}
+							allAuthors={authors}
+						/>
+					</ProtectedRoute>
+				}
+			/>
 		</Routes>
 	);
 }

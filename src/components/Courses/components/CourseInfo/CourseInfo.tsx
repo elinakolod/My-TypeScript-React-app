@@ -18,9 +18,7 @@ type CourseProps = {
 const CourseInfo = ({ courses }: CourseProps) => {
 	const navigate = useNavigate();
 	const params = useParams();
-	const [course] = useState(
-		courses.find((course) => course.id === params.courseId)
-	);
+	const course = courses.find((course) => course.id === params.courseId);
 
 	return (
 		<Container>
