@@ -1,4 +1,5 @@
 import { useState, Dispatch, SetStateAction } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 
 import {
@@ -21,6 +22,7 @@ import {
 	INVALID_SUMBOLS,
 	DEFAULT_HOURS,
 } from 'constants/constants';
+import Path from 'constants/Path';
 
 import styles from './CreateCourse.module.css';
 
@@ -29,7 +31,7 @@ import Input from 'common/Input/Input';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import { Form, Row, Col, FormGroup, List, Container } from 'reactstrap';
 
-import formatCreationDate from 'helpers/formatCreationDate.js';
+import formatCreationDate from 'helpers/formatCreationDate';
 import formatDuration from 'helpers/formatDuration';
 
 import { Course, Author } from 'components/Courses/Course.types';
@@ -37,7 +39,6 @@ import { Course, Author } from 'components/Courses/Course.types';
 type CourseFormProps = {
 	addCourse: Dispatch<SetStateAction<unknown>>;
 	addAuthor: Dispatch<SetStateAction<unknown>>;
-	setIsFormVisible: Dispatch<SetStateAction<unknown>>;
 	allAuthors: Author[];
 };
 
@@ -53,11 +54,11 @@ const formInputs = {
 const CreateCourse = ({
 	addCourse,
 	addAuthor,
-	setIsFormVisible,
 	allAuthors,
 }: CourseFormProps) => {
 	const [authorName, setAuthorName] = useState('');
 	const [course, setCourse] = useState(formInputs);
+	const navigate = useNavigate();
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -76,9 +77,7 @@ const CreateCourse = ({
 		setCourse((prevState) => {
 			return {
 				...prevState,
-				authors: prevState.authors.filter(
-					(author) => author.id !== authorId
-				),
+				authors: prevState.authors.filter((author) => author.id !== authorId),
 			};
 		});
 	};
@@ -119,7 +118,7 @@ const CreateCourse = ({
 				authors: course.authors.map((author) => author.id),
 			};
 			addCourse((prevState) => [...prevState, courseFields]);
-			setIsFormVisible(false);
+			navigate(`/${Path.course.index}`);
 		} else {
 			alert(COURSE_ERROR);
 		}
@@ -156,13 +155,9 @@ const CreateCourse = ({
 							labelText={AUTHOR_NAME}
 							value={authorName}
 							placeholder={AUTHOR_PLACEHOLDER}
-							onChange={(event) =>
-								setAuthorName(event.target.value)
-							}
+							onChange={(event) => setAuthorName(event.target.value)}
 						/>
-						<Button onClick={handleAuthorCreate}>
-							{CREATE_AUTHOR}
-						</Button>
+						<Button onClick={handleAuthorCreate}>{CREATE_AUTHOR}</Button>
 					</FormGroup>
 					<FormGroup>
 						<h5>{DURATION}</h5>
@@ -176,9 +171,7 @@ const CreateCourse = ({
 					</FormGroup>
 					<h3>
 						{DURATION}:{' '}
-						{course.duration
-							? formatDuration(course.duration)
-							: DEFAULT_HOURS}
+						{course.duration ? formatDuration(+course.duration) : DEFAULT_HOURS}
 					</h3>
 				</Col>
 				<Col md={6}>
@@ -195,9 +188,7 @@ const CreateCourse = ({
 												<AuthorItem
 													author={author}
 													buttonText={ADD_AUTHOR}
-													handleAuthorItemClick={
-														handleAuthorAdd
-													}
+													handleAuthorItemClick={handleAuthorAdd}
 												/>
 											</li>
 										);
@@ -216,9 +207,7 @@ const CreateCourse = ({
 										<AuthorItem
 											author={author}
 											buttonText={DELETE_AUTHOR}
-											handleAuthorItemClick={
-												handleAuthorDelete
-											}
+											handleAuthorItemClick={handleAuthorDelete}
 										/>
 									</li>
 								))}

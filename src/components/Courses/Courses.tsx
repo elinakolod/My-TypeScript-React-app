@@ -1,63 +1,33 @@
-import { useState, useMemo } from 'react';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-import {
-	mockedCoursesList,
-	mockedAuthorsList,
-	ADD_COURSE,
-} from 'constants/constants';
+import { ADD_COURSE } from 'constants/constants';
+import Path from 'constants/Path';
 
 import { List } from 'reactstrap';
-import Button from '../../common/Button/Button';
+import Button from 'common/Button/Button';
 import CourseCard from './components/CourseCard/CourseCard';
 import SearchBar from './components/SearchBar/SearchBar';
-import CreateCourse from '../CreateCourse/CreateCourse';
 
 import styles from './Courses.module.css';
 
-const Courses = () => {
-	const formatCourses = () => {
-		return courses.map((course) => {
-			return {
-				...course,
-				authors: course.authors.map(
-					(authorId) =>
-						authors.find((author) => author.id === authorId).name
-				),
-			};
-		});
-	};
+import { Course } from 'components/Courses/Course.types';
 
-	const [isFormVisible, setIsFormVisible] = useState(false);
-	const [courses, setCourses] = useState(mockedCoursesList);
-	const [authors, setAuthors] = useState(mockedAuthorsList);
+type CoursesProps = {
+	courses: Course[];
+};
+
+const Courses = ({ courses }: CoursesProps) => {
 	const [substring, setSubstring] = useState('');
-
-	const coursesCards = useMemo(() => formatCourses(), [courses]);
-
-	if (isFormVisible) {
-		return (
-			<CreateCourse
-				addCourse={setCourses}
-				addAuthor={setAuthors}
-				setIsFormVisible={setIsFormVisible}
-				allAuthors={authors}
-			/>
-		);
-	}
 
 	return (
 		<>
 			<SearchBar substring={substring} setSubstring={setSubstring} />
-			<Button
-				className={styles.addCourseButton}
-				onClick={() => {
-					setIsFormVisible(true);
-				}}
-			>
-				{ADD_COURSE}
+			<Button className={styles.addCourseButton}>
+				<Link to={Path.course.new}>{ADD_COURSE}</Link>
 			</Button>
 			<List type='unstyled'>
-				{coursesCards
+				{courses
 					.filter(
 						(course) =>
 							course.title.toLowerCase().includes(substring) ||

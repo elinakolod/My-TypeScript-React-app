@@ -1,5 +1,6 @@
+import { Outlet } from 'react-router-dom';
+
 import Header from './components/Header/Header';
-import Courses from './components/Courses/Courses';
 import { Container } from 'reactstrap';
 
 function App() {
@@ -7,7 +8,7 @@ function App() {
 		<Container fluid>
 			<Header />
 			<Container className='bg-light border'>
-				<Courses />
+				<Outlet />
 			</Container>
 		</Container>
 	);
