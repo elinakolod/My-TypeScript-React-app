@@ -1,4 +1,4 @@
-import { Routes, Route, Outlet } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useState, useMemo } from 'react';
 
 import CourseInfo from './components/CourseInfo/CourseInfo';
@@ -18,8 +18,7 @@ function CoursesList() {
 			return {
 				...course,
 				authors: course.authors.map(
-					(authorId) =>
-						authors.find((author) => author.id === authorId).name
+					(authorId) => authors.find((author) => author.id === authorId).name
 				),
 			};
 		});
@@ -29,29 +28,27 @@ function CoursesList() {
 
 	return (
 		<Routes>
-			<Route element={<Outlet />}>
-				<Route path='/' element={<Courses courses={coursesCards} />} />
-				<Route
-					path=':courseId'
-					element={
-						<ProtectedRoute>
-							<CourseInfo courses={coursesCards} />
-						</ProtectedRoute>
-					}
-				/>
-				<Route
-					path={Path.course.new}
-					element={
-						<ProtectedRoute>
-							<CreateCourse
-								addCourse={setCourses}
-								addAuthor={setAuthors}
-								allAuthors={authors}
-							/>
-						</ProtectedRoute>
-					}
-				/>
-			</Route>
+			<Route path='/' element={<Courses courses={coursesCards} />} />
+			<Route
+				path=':courseId'
+				element={
+					<ProtectedRoute>
+						<CourseInfo courses={coursesCards} />
+					</ProtectedRoute>
+				}
+			/>
+			<Route
+				path={Path.course.new}
+				element={
+					<ProtectedRoute>
+						<CreateCourse
+							addCourse={setCourses}
+							addAuthor={setAuthors}
+							allAuthors={authors}
+						/>
+					</ProtectedRoute>
+				}
+			/>
 		</Routes>
 	);
 }

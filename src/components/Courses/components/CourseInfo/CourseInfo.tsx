@@ -1,5 +1,4 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import { useState } from 'react';
 
 import { BACK, AUTHORS, DURATION, CREATED, ID } from 'constants/constants';
 
@@ -18,9 +17,7 @@ type CourseProps = {
 const CourseInfo = ({ courses }: CourseProps) => {
 	const navigate = useNavigate();
 	const params = useParams();
-	const [course] = useState(
-		courses.find((course) => course.id === params.courseId)
-	);
+	const course = courses.find((course) => course.id === params.courseId);
 
 	return (
 		<Container>
