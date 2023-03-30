@@ -53,9 +53,9 @@ const formInputs = {
 const CreateCourse = () => {
 	const dispatch = useDispatch();
 	const navigate = useNavigate();
+	const authors = useSelector(allAuthors);
 	const [authorName, setAuthorName] = useState('');
 	const [course, setCourse] = useState(formInputs);
-	const authors = useSelector(allAuthors);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;

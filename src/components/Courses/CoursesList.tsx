@@ -22,7 +22,7 @@ function CoursesList() {
 	const authors = useSelector(allAuthors);
 
 	useEffect(() => {
-		if (!courses.length && !authors.length) fetchCoursesInfo();
+		fetchCoursesInfo();
 	}, []);
 
 	const fetchCoursesInfo = async () => {

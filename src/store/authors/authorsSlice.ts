@@ -8,8 +8,7 @@ export const authorsSlice = createSlice({
 	name: 'authors',
 	initialState: initialState,
 	reducers: {
-		all: (state, action: PayloadAction<Author[]>) =>
-			(state = action.payload),
+		all: (state, action: PayloadAction<Author[]>) => (state = action.payload),
 		add: (state, action: PayloadAction<Author>) => {
 			state.push(action.payload);
 		},

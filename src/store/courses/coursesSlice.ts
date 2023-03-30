@@ -8,8 +8,7 @@ export const coursesSlice = createSlice({
 	name: 'courses',
 	initialState: initialState,
 	reducers: {
-		all: (state, action: PayloadAction<Course[]>) =>
-			(state = action.payload),
+		all: (state, action: PayloadAction<Course[]>) => (state = action.payload),
 		remove: (state, action: PayloadAction<Course>) => {
 			return state.filter((course) => course.id !== action.payload.id);
 		},
