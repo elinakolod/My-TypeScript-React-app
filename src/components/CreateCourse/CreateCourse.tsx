@@ -76,9 +76,7 @@ const CreateCourse = () => {
 		setCourse((prevState) => {
 			return {
 				...prevState,
-				authors: prevState.authors.filter(
-					(author) => author.id !== authorId
-				),
+				authors: prevState.authors.filter((author) => author.id !== authorId),
 			};
 		});
 	};
@@ -160,13 +158,9 @@ const CreateCourse = () => {
 							labelText={AUTHOR_NAME}
 							value={authorName}
 							placeholder={AUTHOR_PLACEHOLDER}
-							onChange={(event) =>
-								setAuthorName(event.target.value)
-							}
+							onChange={(event) => setAuthorName(event.target.value)}
 						/>
-						<Button onClick={handleAuthorCreate}>
-							{CREATE_AUTHOR}
-						</Button>
+						<Button onClick={handleAuthorCreate}>{CREATE_AUTHOR}</Button>
 					</FormGroup>
 					<FormGroup>
 						<h5>{DURATION}</h5>
@@ -180,9 +174,7 @@ const CreateCourse = () => {
 					</FormGroup>
 					<h3>
 						{DURATION}:{' '}
-						{course.duration
-							? formatDuration(+course.duration)
-							: DEFAULT_HOURS}
+						{course.duration ? formatDuration(+course.duration) : DEFAULT_HOURS}
 					</h3>
 				</Col>
 				<Col md={6}>
@@ -199,9 +191,7 @@ const CreateCourse = () => {
 												<AuthorItem
 													author={author}
 													buttonText={ADD_AUTHOR}
-													handleAuthorItemClick={
-														handleAuthorAdd
-													}
+													handleAuthorItemClick={handleAuthorAdd}
 												/>
 											</li>
 										);
@@ -220,9 +210,7 @@ const CreateCourse = () => {
 										<AuthorItem
 											author={author}
 											buttonText={DELETE_AUTHOR}
-											handleAuthorItemClick={
-												handleAuthorDelete
-											}
+											handleAuthorItemClick={handleAuthorDelete}
 										/>
 									</li>
 								))}

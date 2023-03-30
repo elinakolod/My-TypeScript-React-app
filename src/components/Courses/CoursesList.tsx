@@ -42,8 +42,7 @@ function CoursesList() {
 			return {
 				...course,
 				authors: course.authors.map(
-					(authorId) =>
-						authors.find((author) => author.id === authorId).name
+					(authorId) => authors.find((author) => author.id === authorId).name
 				),
 			};
 		});
