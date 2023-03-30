@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+
+import { login } from 'store/users/usersSlice';
+
 import api from 'utils/api';
 
 import {
@@ -30,6 +34,7 @@ const Login = () => {
 	const [user, setUser] = useState(formInputs);
 	const [error, setError] = useState();
 	const navigate = useNavigate();
+	const dispatch = useDispatch();
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -42,15 +47,17 @@ const Login = () => {
 	};
 
 	const handleSubmit = (event) => {
-		event.preventDefault();
 		loginUser();
+
+		event.preventDefault();
 	};
 
 	const loginUser = async () => {
 		try {
 			const response = await api.auth.login(user);
+
+			dispatch(login(response));
 			localStorage.setItem('token', response.result);
-			localStorage.setItem('user', response.user.name);
 			navigate(`/${Path.course.index}`);
 		} catch (error) {
 			setError(error.response.data.errors);

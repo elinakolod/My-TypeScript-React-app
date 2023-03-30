@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 
 import { User } from 'components/Auth/User.types';
+import { Course, Author } from 'components/Courses/Course.types';
 
 const axiosObj = axios.create({
 	baseURL: 'http://localhost:4000/',
@@ -29,8 +30,26 @@ const auth = {
 		}>('login', user),
 };
 
+const courses = {
+	all: () =>
+		request.get<{
+			successful: boolean;
+			result: Course[];
+		}>('courses/all'),
+};
+
+const authors = {
+	all: () =>
+		request.get<{
+			successful: boolean;
+			result: Author[];
+		}>('authors/all'),
+};
+
 const api = {
 	auth,
+	courses,
+	authors,
 };
 
 export default api;

@@ -1,4 +1,8 @@
 import { useNavigate, useLocation } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+
+import { userName } from 'store/users/selectors';
+import { logout } from 'store/users/usersSlice';
 
 import { LOGOUT } from 'constants/constants';
 import Path from 'constants/Path';
@@ -12,12 +16,13 @@ import { Navbar, NavbarBrand } from 'reactstrap';
 const Header = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
+	const dispatch = useDispatch();
+	const name = useSelector(userName);
 
 	const handleButtonClick = () => {
-		if (localStorage.getItem('token')) {
-			localStorage.clear();
-			navigate(`/${Path.login}`);
-		}
+		dispatch(logout());
+		localStorage.clear();
+		navigate(`/${Path.login}`);
 	};
 
 	return (
@@ -30,9 +35,7 @@ const Header = () => {
 					location.pathname.replace('/', '')
 				) && (
 					<>
-						<span className={styles.userName}>
-							{localStorage.getItem('user')}
-						</span>
+						<span className={styles.userName}>{name}</span>
 						<Button onClick={handleButtonClick}>{LOGOUT}</Button>
 					</>
 				)}

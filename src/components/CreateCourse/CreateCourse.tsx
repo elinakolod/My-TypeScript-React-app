@@ -1,6 +1,11 @@
-import { useState, Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { add as addCourse } from 'store/courses/coursesSlice';
+import { add as addAuthor } from 'store/authors/authorsSlice';
+import { allAuthors } from 'store/authors/selectors';
 
 import {
 	CREATE_COURSE,
@@ -34,16 +39,10 @@ import { Form, Row, Col, FormGroup, List, Container } from 'reactstrap';
 import formatCreationDate from 'helpers/formatCreationDate';
 import formatDuration from 'helpers/formatDuration';
 
-import { Course, Author } from 'components/Courses/Course.types';
-
-type CourseFormProps = {
-	addCourse: Dispatch<SetStateAction<unknown>>;
-	addAuthor: Dispatch<SetStateAction<unknown>>;
-	allAuthors: Author[];
-};
+import { Course } from 'components/Courses/Course.types';
 
 const formInputs = {
-	id: uuidv4(),
+	id: '',
 	title: '',
 	description: '',
 	creationDate: formatCreationDate(),
@@ -51,17 +50,16 @@ const formInputs = {
 	authors: [],
 };
 
-const CreateCourse = ({
-	addCourse,
-	addAuthor,
-	allAuthors,
-}: CourseFormProps) => {
+const CreateCourse = () => {
+	const dispatch = useDispatch();
+	const navigate = useNavigate();
 	const [authorName, setAuthorName] = useState('');
 	const [course, setCourse] = useState(formInputs);
-	const navigate = useNavigate();
+	const authors = useSelector(allAuthors);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
+
 		if (!INVALID_SUMBOLS.test(value)) {
 			setCourse((prevState) => {
 				return {
@@ -74,32 +72,36 @@ const CreateCourse = ({
 
 	const handleAuthorDelete = (event) => {
 		const authorId = event.target.name;
+
 		setCourse((prevState) => {
 			return {
 				...prevState,
-				authors: prevState.authors.filter((author) => author.id !== authorId),
+				authors: prevState.authors.filter(
+					(author) => author.id !== authorId
+				),
 			};
 		});
 	};
 
 	const handleAuthorCreate = () => {
-		if (!INVALID_SUMBOLS.test(authorName)) {
-			addAuthor((prevState) => [
-				...prevState,
-				{ id: uuidv4(), name: authorName },
-			]);
+		if (!INVALID_SUMBOLS.test(authorName) && authorName.length > 1) {
+			const author = { id: uuidv4(), name: authorName };
+
+			dispatch(addAuthor(author));
 		}
+
 		setAuthorName('');
 	};
 
 	const handleAuthorAdd = (event) => {
 		const authorId = event.target.name;
+
 		setCourse((prevState) => {
 			return {
 				...prevState,
 				authors: [
 					...prevState.authors,
-					allAuthors.find((author) => author.id === authorId),
+					authors.find((author) => author.id === authorId),
 				],
 			};
 		});
@@ -114,14 +116,17 @@ const CreateCourse = ({
 		) {
 			const courseFields: Course = {
 				...course,
+				id: uuidv4(),
 				duration: +course.duration,
 				authors: course.authors.map((author) => author.id),
 			};
-			addCourse((prevState) => [...prevState, courseFields]);
+
+			dispatch(addCourse(courseFields));
 			navigate(`/${Path.course.index}`);
 		} else {
 			alert(COURSE_ERROR);
 		}
+
 		event.preventDefault();
 	};
 
@@ -155,9 +160,13 @@ const CreateCourse = ({
 							labelText={AUTHOR_NAME}
 							value={authorName}
 							placeholder={AUTHOR_PLACEHOLDER}
-							onChange={(event) => setAuthorName(event.target.value)}
+							onChange={(event) =>
+								setAuthorName(event.target.value)
+							}
 						/>
-						<Button onClick={handleAuthorCreate}>{CREATE_AUTHOR}</Button>
+						<Button onClick={handleAuthorCreate}>
+							{CREATE_AUTHOR}
+						</Button>
 					</FormGroup>
 					<FormGroup>
 						<h5>{DURATION}</h5>
@@ -171,24 +180,28 @@ const CreateCourse = ({
 					</FormGroup>
 					<h3>
 						{DURATION}:{' '}
-						{course.duration ? formatDuration(+course.duration) : DEFAULT_HOURS}
+						{course.duration
+							? formatDuration(+course.duration)
+							: DEFAULT_HOURS}
 					</h3>
 				</Col>
 				<Col md={6}>
 					<FormGroup>
 						<h5>{AUTHORS}</h5>
-						{allAuthors.length < 1 ? (
+						{authors.length < 1 ? (
 							EMPTY_AUTHORS
 						) : (
 							<List type='unstyled'>
-								{allAuthors.map((author) => {
+								{authors.map((author) => {
 									if (!course.authors.includes(author))
 										return (
 											<li key={author.id}>
 												<AuthorItem
 													author={author}
 													buttonText={ADD_AUTHOR}
-													handleAuthorItemClick={handleAuthorAdd}
+													handleAuthorItemClick={
+														handleAuthorAdd
+													}
 												/>
 											</li>
 										);
@@ -207,7 +220,9 @@ const CreateCourse = ({
 										<AuthorItem
 											author={author}
 											buttonText={DELETE_AUTHOR}
-											handleAuthorItemClick={handleAuthorDelete}
+											handleAuthorItemClick={
+												handleAuthorDelete
+											}
 										/>
 									</li>
 								))}
