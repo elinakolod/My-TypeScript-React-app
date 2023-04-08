@@ -1,8 +1,11 @@
 import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { remove } from 'store/courses/coursesSlice';
+import { destroyCourse } from 'store/courses/thunk';
+import { userRole } from 'store/users/selectors';
+
+import { AppDispatch } from 'store';
 
 import { SHOW_COURSE, AUTORS, DURATION, CREATED } from 'constants/constants';
 
@@ -14,6 +17,8 @@ import formatDuration from 'helpers/formatDuration';
 
 import { Course } from 'components/Courses/Course.types';
 
+import Path from 'constants/Path';
+
 import styles from 'components/Courses/Courses.module.css';
 
 type CourseProps = {
@@ -21,7 +26,8 @@ type CourseProps = {
 };
 
 const CourseCard = ({ course }: CourseProps) => {
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
+	const role = useSelector(userRole);
 
 	const courseCard = useMemo(() => {
 		return {
@@ -33,7 +39,7 @@ const CourseCard = ({ course }: CourseProps) => {
 	}, [course]);
 
 	const handleDelete = () => {
-		dispatch(remove(course));
+		dispatch(destroyCourse(course.id));
 	};
 
 	return (
@@ -56,12 +62,18 @@ const CourseCard = ({ course }: CourseProps) => {
 						{SHOW_COURSE}
 					</Link>
 				</Button>
-				<Button>
-					<IoPencilOutline />
-				</Button>
-				<Button onClick={handleDelete}>
-					<IoTrashBinOutline />
-				</Button>
+				{role === 'admin' && (
+					<>
+						<Button>
+							<Link to={`${Path.course.update}/${course.id}`}>
+								<IoPencilOutline />
+							</Link>
+						</Button>
+						<Button onClick={handleDelete}>
+							<IoTrashBinOutline />
+						</Button>
+					</>
+				)}
 			</CardBody>
 		</Card>
 	);

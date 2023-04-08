@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import { fetchUser, login, logout } from './thunk';
+
 import { User } from 'components/Auth/User.types';
 
 type userInitialState = {
 	isAuth: boolean;
-	name: string;
-	email: string;
-	token: string;
+	user: User;
 };
 
 type loginType = {
@@ -16,27 +16,35 @@ type loginType = {
 
 const initialState: userInitialState = {
 	isAuth: false,
-	name: '',
-	email: '',
-	token: '',
+	user: {
+		name: '',
+		email: '',
+	},
 };
 
 export const usersSlice = createSlice({
 	name: 'users',
 	initialState: initialState,
-	reducers: {
-		login: (state, action: PayloadAction<loginType>) => {
-			return (state = {
-				isAuth: true,
-				name: action.payload.user.name,
-				email: action.payload.user.email,
-				token: action.payload.result,
+	reducers: {},
+	extraReducers: (builder) => {
+		builder
+			.addCase(fetchUser.fulfilled, (state, action) => {
+				state.isAuth = true;
+				state.user = action.payload;
+			})
+			.addCase(
+				login.fulfilled,
+				(state, action: PayloadAction<loginType>) => {
+					localStorage.setItem('token', action.payload.result);
+					state.isAuth = true;
+					state.user = action.payload.user;
+				}
+			)
+			.addCase(logout.fulfilled, () => {
+				localStorage.clear();
+				return initialState;
 			});
-		},
-		logout: () => initialState,
 	},
 });
-
-export const { login, logout } = usersSlice.actions;
 
 export default usersSlice.reducer;

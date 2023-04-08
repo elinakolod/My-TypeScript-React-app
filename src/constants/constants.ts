@@ -8,6 +8,7 @@ export const AUTORS = 'Authors';
 export const DURATION = 'Duration';
 export const CREATED = 'Created';
 export const CREATE_COURSE = 'Create course';
+export const UPDATE_COURSE = 'Update course';
 export const TITLE = 'Title';
 export const DESCRIPTION = 'Description';
 export const ADD_AUTHOR = 'Add author';

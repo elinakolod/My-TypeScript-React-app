@@ -1,10 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { login } from 'store/users/usersSlice';
+import { login } from 'store/users/thunk';
 
-import api from 'utils/api';
+import { AppDispatch } from 'store';
 
 import {
 	EMAIL,
@@ -34,7 +34,12 @@ const Login = () => {
 	const [user, setUser] = useState(formInputs);
 	const [error, setError] = useState();
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
+	const token = localStorage.getItem('token');
+
+	useEffect(() => {
+		if (token) navigate(`/${Path.course.index}`);
+	}, []);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -54,10 +59,7 @@ const Login = () => {
 
 	const loginUser = async () => {
 		try {
-			const response = await api.auth.login(user);
-
-			dispatch(login(response));
-			localStorage.setItem('token', response.result);
+			await dispatch(login(user));
 			navigate(`/${Path.course.index}`);
 		} catch (error) {
 			setError(error.response.data.errors);

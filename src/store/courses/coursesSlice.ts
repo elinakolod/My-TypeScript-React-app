@@ -1,28 +1,74 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
+import {
+	fetchCourses,
+	createCourse,
+	destroyCourse,
+	updateCourse,
+} from './thunk';
+
 import { Course } from 'components/Courses/Course.types';
 
-const initialState: Course[] = [];
+type coursesState = {
+	entities: Course[];
+	loading: boolean;
+	error: string;
+};
+
+const initialState: coursesState = {
+	entities: [],
+	loading: false,
+	error: '',
+};
 
 export const coursesSlice = createSlice({
 	name: 'courses',
 	initialState: initialState,
-	reducers: {
-		all: (state, action: PayloadAction<Course[]>) => action.payload,
-		remove: (state, action: PayloadAction<Course>) => {
-			return state.filter((course) => course.id !== action.payload.id);
-		},
-		edit: (state, action: PayloadAction<Course>) => {
-			state.map((course) => {
-				if (course.id === action.payload.id) action.payload;
-			});
-		},
-		add: (state, action: PayloadAction<Course>) => {
-			state.push(action.payload);
-		},
+	reducers: {},
+	extraReducers: (builder) => {
+		builder
+			.addCase(fetchCourses.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(
+				fetchCourses.fulfilled,
+				(state, action: PayloadAction<Course[]>) => {
+					state.entities = action.payload;
+					state.loading = false;
+				}
+			)
+			.addCase(fetchCourses.rejected, (state, action) => {
+				state.loading = false;
+				state.error = `${action.error.name}: ${action.error.message}`;
+			})
+			.addCase(
+				createCourse.fulfilled,
+				(state, action: PayloadAction<Course>) => {
+					state.entities.push(action.payload);
+				}
+			)
+			.addCase(destroyCourse.fulfilled, (state, action) => {
+				return {
+					...state,
+					entities: state.entities.filter(
+						(course) => course.id !== action.meta.arg
+					),
+				};
+			})
+			.addCase(
+				updateCourse.fulfilled,
+				(state, action: PayloadAction<Course>) => {
+					return {
+						...state,
+						entities: state.entities.map((course) => {
+							return course.id === action.payload.id
+								? action.payload
+								: course;
+						}),
+					};
+				}
+			);
 	},
 });
-
-export const { all, remove, edit, add } = coursesSlice.actions;
 
 export default coursesSlice.reducer;
