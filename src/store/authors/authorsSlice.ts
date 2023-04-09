@@ -32,10 +32,6 @@ export const authorsSlice = createSlice({
 					state.loading = false;
 				}
 			)
-			.addCase(fetchAuthors.rejected, (state, action) => {
-				state.loading = false;
-				state.error = `${action.error.name}: ${action.error.message}`;
-			})
 			.addCase(
 				createAuthor.fulfilled,
 				(state, action: PayloadAction<Author>) => {

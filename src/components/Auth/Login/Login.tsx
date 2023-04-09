@@ -17,7 +17,7 @@ import {
 } from 'constants/constants';
 import Path from 'constants/Path';
 
-import { Container, Form, FormGroup, Alert } from 'reactstrap';
+import { Container, Form, FormGroup } from 'reactstrap';
 import Input from 'common/Input/Input';
 import Button from 'common/Button/Button';
 
@@ -32,7 +32,6 @@ const formInputs: User = {
 
 const Login = () => {
 	const [user, setUser] = useState(formInputs);
-	const [error, setError] = useState();
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
 	const token = localStorage.getItem('token');
@@ -58,17 +57,12 @@ const Login = () => {
 	};
 
 	const loginUser = async () => {
-		try {
-			await dispatch(login(user));
-			navigate(`/${Path.course.index}`);
-		} catch (error) {
-			setError(error.response.data.errors);
-		}
+		await dispatch(login(user));
+		navigate(`/${Path.course.index}`);
 	};
 
 	return (
 		<Container className={styles.authForm}>
-			{error && <Alert color='danger'>{error}</Alert>}
 			<h2>{LOGIN}</h2>
 			<Form onSubmit={handleSubmit}>
 				<FormGroup>

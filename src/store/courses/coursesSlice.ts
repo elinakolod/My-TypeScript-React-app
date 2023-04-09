@@ -37,10 +37,6 @@ export const coursesSlice = createSlice({
 					state.loading = false;
 				}
 			)
-			.addCase(fetchCourses.rejected, (state, action) => {
-				state.loading = false;
-				state.error = `${action.error.name}: ${action.error.message}`;
-			})
 			.addCase(
 				createCourse.fulfilled,
 				(state, action: PayloadAction<Course>) => {
@@ -61,9 +57,7 @@ export const coursesSlice = createSlice({
 					return {
 						...state,
 						entities: state.entities.map((course) => {
-							return course.id === action.payload.id
-								? action.payload
-								: course;
+							return course.id === action.payload.id ? action.payload : course;
 						}),
 					};
 				}

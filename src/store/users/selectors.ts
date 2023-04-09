@@ -4,6 +4,4 @@ export const userEmail = (state) => state.users.user.email;
 
 export const userRole = (state) => state.users.user.role;
 
-export const isAuth = (state) => state.users.isAuth;
-
-export const userLoading = (state) => state.users.loading;
+export const userError = (state) => state.users.error;

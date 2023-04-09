@@ -1,12 +1,12 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-import { fetchUser, login, logout } from './thunk';
+import { fetchUser, login, logout, register } from './thunk';
 
 import { User } from 'components/Auth/User.types';
 
 type userInitialState = {
-	isAuth: boolean;
 	user: User;
+	error: string;
 };
 
 type loginType = {
@@ -15,11 +15,11 @@ type loginType = {
 };
 
 const initialState: userInitialState = {
-	isAuth: false,
 	user: {
 		name: '',
 		email: '',
 	},
+	error: '',
 };
 
 export const usersSlice = createSlice({
@@ -29,17 +29,21 @@ export const usersSlice = createSlice({
 	extraReducers: (builder) => {
 		builder
 			.addCase(fetchUser.fulfilled, (state, action) => {
-				state.isAuth = true;
 				state.user = action.payload;
 			})
-			.addCase(
-				login.fulfilled,
-				(state, action: PayloadAction<loginType>) => {
-					localStorage.setItem('token', action.payload.result);
-					state.isAuth = true;
-					state.user = action.payload.user;
-				}
-			)
+			.addCase(login.fulfilled, (state, action: PayloadAction<loginType>) => {
+				localStorage.setItem('token', action.payload.result);
+				state.user = action.payload.user;
+			})
+			.addCase(login.rejected, (state, action) => {
+				state.error = action.error.message;
+			})
+			.addCase(register.fulfilled, () => {
+				return;
+			})
+			.addCase(register.rejected, (state, action) => {
+				state.error = action.error.message;
+			})
 			.addCase(logout.fulfilled, () => {
 				localStorage.clear();
 				return initialState;
