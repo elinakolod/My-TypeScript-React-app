@@ -11,33 +11,17 @@ export const fetchUser = createAsyncThunk('users/fetchUser', async () => {
 });
 
 export const login = createAsyncThunk('users/login', async (user: User) => {
-	try {
-		const response = await api.auth.login(user);
+	const response = await api.auth.login(user);
 
-		return response;
-	} catch (err) {
-		const customError = {
-			name: 'Custom axios error',
-			message: err.response.data.errors.join(' '),
-		};
-		throw customError;
-	}
+	return response;
 });
 
 export const register = createAsyncThunk(
 	'users/register',
 	async (user: User) => {
-		try {
-			const response = await api.auth.register(user);
+		const response = await api.auth.register(user);
 
-			return response;
-		} catch (err) {
-			const customError = {
-				name: 'Custom axios error',
-				message: err.response.data.errors.join(' '),
-			};
-			throw customError;
-		}
+		return response;
 	}
 );
 

@@ -55,8 +55,8 @@ const Registration = () => {
 
 	const registerUser = async () => {
 		const response = await dispatch(register(user));
-		console.log(response);
-		if (!response.error) navigate(`/${Path.login}`);
+
+		if (response.payload) navigate(`/${Path.login}`);
 	};
 
 	return (

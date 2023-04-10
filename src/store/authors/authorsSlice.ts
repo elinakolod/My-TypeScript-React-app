@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import { fetchAuthors, createAuthor } from './thunk';
 
@@ -25,17 +25,17 @@ export const authorsSlice = createSlice({
 			.addCase(fetchAuthors.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(
-				fetchAuthors.fulfilled,
-				(state, action: PayloadAction<Author[]>) => {
-					state.entities = action.payload;
-					state.loading = false;
-				}
-			)
-			.addCase(
-				createAuthor.fulfilled,
-				(state, action: PayloadAction<Author>) => {
-					state.entities.push(action.payload);
+			.addCase(fetchAuthors.fulfilled, (state, { payload }) => {
+				state.entities = payload;
+				state.loading = false;
+			})
+			.addCase(createAuthor.fulfilled, (state, { payload }) => {
+				state.entities.push(payload);
+			})
+			.addMatcher(
+				(action) => action.type.endsWith('/rejected'),
+				(state, { error }) => {
+					state.error = error.message;
 				}
 			);
 	},

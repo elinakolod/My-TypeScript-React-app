@@ -27,17 +27,21 @@ function CoursesList() {
 	const loading = useSelector(coursesLoading);
 
 	useEffect(() => {
+		fetchUserInfo();
+		fetchAuthorsInfo();
 		fetchCoursesInfo();
 	}, []);
 
 	const fetchCoursesInfo = async () => {
-		try {
-			await dispatch(fetchUser());
-			await dispatch(fetchAuthors());
-			await dispatch(fetchCourses());
-		} catch (error) {
-			console.log(error.response.data.errors);
-		}
+		await dispatch(fetchCourses());
+	};
+
+	const fetchUserInfo = async () => {
+		await dispatch(fetchUser());
+	};
+
+	const fetchAuthorsInfo = async () => {
+		await dispatch(fetchAuthors());
 	};
 
 	const formatCourses = () => {
@@ -45,7 +49,8 @@ function CoursesList() {
 			return {
 				...course,
 				authors: course.authors.map(
-					(authorId) => authors.find((author) => author.id === authorId).name
+					(authorId) =>
+						authors.find((author) => author.id === authorId).name
 				),
 			};
 		});

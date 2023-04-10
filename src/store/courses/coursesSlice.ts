@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 import {
 	fetchCourses,
@@ -30,36 +30,33 @@ export const coursesSlice = createSlice({
 			.addCase(fetchCourses.pending, (state) => {
 				state.loading = true;
 			})
-			.addCase(
-				fetchCourses.fulfilled,
-				(state, action: PayloadAction<Course[]>) => {
-					state.entities = action.payload;
-					state.loading = false;
-				}
-			)
-			.addCase(
-				createCourse.fulfilled,
-				(state, action: PayloadAction<Course>) => {
-					state.entities.push(action.payload);
-				}
-			)
-			.addCase(destroyCourse.fulfilled, (state, action) => {
+			.addCase(fetchCourses.fulfilled, (state, { payload }) => {
+				state.entities = payload;
+				state.loading = false;
+			})
+			.addCase(createCourse.fulfilled, (state, { payload }) => {
+				state.entities.push(payload);
+			})
+			.addCase(destroyCourse.fulfilled, (state, { meta }) => {
 				return {
 					...state,
 					entities: state.entities.filter(
-						(course) => course.id !== action.meta.arg
+						(course) => course.id !== meta.arg
 					),
 				};
 			})
-			.addCase(
-				updateCourse.fulfilled,
-				(state, action: PayloadAction<Course>) => {
-					return {
-						...state,
-						entities: state.entities.map((course) => {
-							return course.id === action.payload.id ? action.payload : course;
-						}),
-					};
+			.addCase(updateCourse.fulfilled, (state, { payload }) => {
+				return {
+					...state,
+					entities: state.entities.map((course) => {
+						return course.id === payload.id ? payload : course;
+					}),
+				};
+			})
+			.addMatcher(
+				(action) => action.type.endsWith('/rejected'),
+				(state, { error }) => {
+					state.error = error.message;
 				}
 			);
 	},

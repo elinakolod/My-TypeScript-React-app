@@ -24,6 +24,19 @@ axiosObj.interceptors.request.use(
 	}
 );
 
+axiosObj.interceptors.response.use(
+	(response) => {
+		return response;
+	},
+	(error) => {
+		const customError = {
+			message: error.response.data.errors.join(' '),
+		};
+
+		throw customError;
+	}
+);
+
 const responseBody = <T>(response: AxiosResponse<T>) => response.data;
 
 const request = {
