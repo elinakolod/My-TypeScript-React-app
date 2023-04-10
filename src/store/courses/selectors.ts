@@ -1,4 +1,3 @@
 export const allCourses = (state) => state.courses.entities;
 
-export const coursesLoading = (state) =>
-	state.courses.loading || state.authors.loading;
+export const coursesLoading = (state) => state.courses.loading;

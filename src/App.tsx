@@ -2,19 +2,19 @@ import { Outlet } from 'react-router-dom';
 
 import { useSelector } from 'react-redux';
 
-import { userError } from 'store/users/selectors';
+import { authError } from 'store/users/selectors';
 
 import Header from './components/Header/Header';
 import { Container, Alert } from 'reactstrap';
 
 function App() {
-	const error = useSelector(userError);
+	const errorAuth = useSelector(authError);
 
 	return (
 		<Container fluid>
 			<Header />
 			<Container className='bg-light border'>
-				{error && <Alert color='danger'>{error}</Alert>}
+				{errorAuth && <Alert color='danger'>{errorAuth}</Alert>}
 				<Outlet />
 			</Container>
 		</Container>
