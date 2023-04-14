@@ -51,8 +51,7 @@ function CoursesList() {
 			return {
 				...course,
 				authors: course.authors.map(
-					(authorId) =>
-						authors.find((author) => author.id === authorId).name
+					(authorId) => authors.find((author) => author.id === authorId).name
 				),
 			};
 		});
@@ -65,10 +64,7 @@ function CoursesList() {
 	return (
 		<Routes>
 			<Route path='/' element={<Courses courses={coursesCards} />} />
-			<Route
-				path=':courseId'
-				element={<CourseInfo courses={coursesCards} />}
-			/>
+			<Route path=':courseId' element={<CourseInfo courses={coursesCards} />} />
 			<Route
 				path={Path.course.new}
 				element={
