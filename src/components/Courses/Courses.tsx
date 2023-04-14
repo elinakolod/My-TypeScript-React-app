@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { userRole } from 'store/users/selectors';
+import { isUserAdmin } from 'store/users/selectors';
 
 import { ADD_COURSE } from 'constants/constants';
 import Path from 'constants/Path';
@@ -22,12 +22,12 @@ type CoursesProps = {
 
 const Courses = ({ courses }: CoursesProps) => {
 	const [substring, setSubstring] = useState('');
-	const role = useSelector(userRole);
+	const isAdmin = useSelector(isUserAdmin);
 
 	return (
 		<>
 			<SearchBar substring={substring} setSubstring={setSubstring} />
-			{role === 'admin' && (
+			{isAdmin && (
 				<Button className={styles.addCourseButton}>
 					<Link to={Path.course.new}>{ADD_COURSE}</Link>
 				</Button>

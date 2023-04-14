@@ -36,6 +36,7 @@ export const authorsSlice = createSlice({
 				(action) => action.type.endsWith('/rejected'),
 				(state, { error }) => {
 					state.error = error.message;
+					state.loading = false;
 				}
 			);
 	},

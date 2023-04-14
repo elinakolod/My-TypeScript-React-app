@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { destroyCourse } from 'store/courses/thunk';
-import { userRole } from 'store/users/selectors';
+import { isUserAdmin } from 'store/users/selectors';
 
 import { AppDispatch } from 'store';
 
@@ -27,7 +27,7 @@ type CourseProps = {
 
 const CourseCard = ({ course }: CourseProps) => {
 	const dispatch = useDispatch<AppDispatch>();
-	const role = useSelector(userRole);
+	const isAdmin = useSelector(isUserAdmin);
 
 	const courseCard = useMemo(() => {
 		return {
@@ -62,7 +62,7 @@ const CourseCard = ({ course }: CourseProps) => {
 						{SHOW_COURSE}
 					</Link>
 				</Button>
-				{role === 'admin' && (
+				{isAdmin && (
 					<>
 						<Button>
 							<Link to={`${Path.course.update}/${course.id}`}>

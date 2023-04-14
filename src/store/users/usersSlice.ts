@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-import { fetchUser, login, logout, register } from './thunk';
+import { fetchUser, login, logout } from './thunk';
 
 import { User } from 'components/Auth/User.types';
 
@@ -27,16 +27,9 @@ export const usersSlice = createSlice({
 				state.user = payload;
 			})
 			.addCase(login.fulfilled, (state, { payload }) => {
-				localStorage.setItem('token', payload.result);
 				state.user = payload.user;
 			})
-			.addCase(register.fulfilled, () => {
-				return;
-			})
-			.addCase(logout.fulfilled, () => {
-				localStorage.clear();
-				return initialState;
-			})
+			.addCase(logout.fulfilled, () => initialState)
 			.addMatcher(
 				(action) => action.type.endsWith('/rejected'),
 				(state, { error }) => {

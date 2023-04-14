@@ -13,6 +13,7 @@ export const fetchUser = createAsyncThunk('users/fetchUser', async () => {
 export const login = createAsyncThunk('users/login', async (user: User) => {
 	const response = await api.auth.login(user);
 
+	localStorage.setItem('token', response.result);
 	return response;
 });
 
@@ -27,4 +28,5 @@ export const register = createAsyncThunk(
 
 export const logout = createAsyncThunk('users/logout', async () => {
 	await api.auth.logout();
+	localStorage.clear();
 });

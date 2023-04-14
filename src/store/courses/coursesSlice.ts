@@ -40,7 +40,9 @@ export const coursesSlice = createSlice({
 			.addCase(destroyCourse.fulfilled, (state, { meta }) => {
 				return {
 					...state,
-					entities: state.entities.filter((course) => course.id !== meta.arg),
+					entities: state.entities.filter(
+						(course) => course.id !== meta.arg
+					),
 				};
 			})
 			.addCase(updateCourse.fulfilled, (state, { payload }) => {
@@ -55,6 +57,7 @@ export const coursesSlice = createSlice({
 				(action) => action.type.endsWith('/rejected'),
 				(state, { error }) => {
 					state.error = error.message;
+					state.loading = false;
 				}
 			);
 	},

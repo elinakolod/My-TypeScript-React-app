@@ -1,15 +1,12 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
-import { isUserAdmin } from 'store/users/selectors';
 
 import Path from 'constants/Path';
 
-const AdminRoute = ({ children }) => {
-	const isAdmin = useSelector(isUserAdmin);
+const GuestRoute = ({ children }) => {
+	const token = localStorage.getItem('token');
 	const location = useLocation();
 
-	if (!isAdmin) {
+	if (token) {
 		return (
 			<Navigate
 				to={`/${Path.course.index}`}
@@ -21,4 +18,4 @@ const AdminRoute = ({ children }) => {
 	return children;
 };
 
-export default AdminRoute;
+export default GuestRoute;

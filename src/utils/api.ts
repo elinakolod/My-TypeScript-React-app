@@ -30,7 +30,7 @@ axiosObj.interceptors.response.use(
 	},
 	(error) => {
 		const customError = {
-			message: error.response.data.errors.join(' '),
+			message: error.response?.data?.errors?.join(' '),
 		};
 
 		throw customError;

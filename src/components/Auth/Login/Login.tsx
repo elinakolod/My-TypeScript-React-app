@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { login } from 'store/users/thunk';
+import { login, fetchUser } from 'store/users/thunk';
 
 import { AppDispatch } from 'store';
 
@@ -34,11 +34,6 @@ const Login = () => {
 	const [user, setUser] = useState(formInputs);
 	const navigate = useNavigate();
 	const dispatch = useDispatch<AppDispatch>();
-	const token = localStorage.getItem('token');
-
-	useEffect(() => {
-		if (token) navigate(`/${Path.course.index}`);
-	}, []);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -58,6 +53,7 @@ const Login = () => {
 
 	const loginUser = async () => {
 		await dispatch(login(user));
+		await dispatch(fetchUser());
 		navigate(`/${Path.course.index}`);
 	};
 
