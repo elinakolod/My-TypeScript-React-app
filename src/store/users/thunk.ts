@@ -10,12 +10,16 @@ export const fetchUser = createAsyncThunk('users/fetchUser', async () => {
 	return response.result;
 });
 
-export const login = createAsyncThunk('users/login', async (user: User) => {
-	const response = await api.auth.login(user);
+export const login = createAsyncThunk(
+	'users/login',
+	async (user: User, { dispatch }) => {
+		const response = await api.auth.login(user);
 
-	localStorage.setItem('token', response.result);
-	return response;
-});
+		localStorage.setItem('token', response.result);
+		dispatch(fetchUser());
+		return response;
+	}
+);
 
 export const register = createAsyncThunk(
 	'users/register',

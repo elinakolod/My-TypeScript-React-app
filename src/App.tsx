@@ -12,13 +12,13 @@ import Loader from './common/Loader/Loader';
 import { Container, Alert } from 'reactstrap';
 
 function App() {
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
 	const errorAuth = useSelector(authError);
 	const token = localStorage.getItem('token');
 	const dispatch = useDispatch<AppDispatch>();
 
 	useEffect(() => {
-		if (token) fetchUserInfo();
+		token ? fetchUserInfo() : setLoading(false);
 	}, []);
 
 	const fetchUserInfo = async () => {

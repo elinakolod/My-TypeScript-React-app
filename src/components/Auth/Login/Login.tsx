@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { login, fetchUser } from 'store/users/thunk';
+import { login } from 'store/users/thunk';
 
 import { AppDispatch } from 'store';
 
@@ -53,7 +53,6 @@ const Login = () => {
 
 	const loginUser = async () => {
 		await dispatch(login(user));
-		await dispatch(fetchUser());
 		navigate(`/${Path.course.index}`);
 	};
 

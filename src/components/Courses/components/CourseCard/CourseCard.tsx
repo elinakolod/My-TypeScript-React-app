@@ -32,9 +32,9 @@ const CourseCard = ({ course }: CourseProps) => {
 	const courseCard = useMemo(() => {
 		return {
 			...course,
-			duration: formatDuration(course.duration),
-			creationDate: course.creationDate.replace(/\//g, '.'),
-			authors: course.authors.join(', '),
+			duration: formatDuration(course?.duration),
+			creationDate: course?.creationDate.replace(/\//g, '.'),
+			authors: course?.authors.join(', '),
 		};
 	}, [course]);
 
@@ -45,27 +45,27 @@ const CourseCard = ({ course }: CourseProps) => {
 	return (
 		<Card className={`my-2 ${styles.courseCard}`}>
 			<CardBody>
-				<CardTitle tag='h2'>{courseCard.title}</CardTitle>
-				<CardText>{courseCard.description}</CardText>
+				<CardTitle tag='h2'>{courseCard?.title}</CardTitle>
+				<CardText>{courseCard?.description}</CardText>
 			</CardBody>
 			<CardBody>
 				<dl>
 					<dt>{AUTORS}</dt>
-					<dd>{courseCard.authors}</dd>
+					<dd>{courseCard?.authors}</dd>
 					<dt>{DURATION}</dt>
-					<dd>{courseCard.duration}</dd>
+					<dd>{courseCard?.duration}</dd>
 					<dt>{CREATED}</dt>
-					<dd>{courseCard.creationDate}</dd>
+					<dd>{courseCard?.creationDate}</dd>
 				</dl>
 				<Button>
-					<Link to={course.id} state={courseCard}>
+					<Link to={course?.id} state={courseCard}>
 						{SHOW_COURSE}
 					</Link>
 				</Button>
 				{isAdmin && (
 					<>
 						<Button>
-							<Link to={`${Path.course.update}/${course.id}`}>
+							<Link to={`${Path.course.update}/${course?.id}`}>
 								<IoPencilOutline />
 							</Link>
 						</Button>

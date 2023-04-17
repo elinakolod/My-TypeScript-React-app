@@ -36,3 +36,4 @@ export const PASSWORD_PLACEHOLDER = 'Enter password';
 export const REGISTRATION = 'Registration';
 export const REG_NOTICE = 'If you have an account you can ';
 export const LOGIN_NOTICE = "If you don't have an account you can ";
+export const NO_COURSE = 'No such course';

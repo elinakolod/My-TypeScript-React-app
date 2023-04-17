@@ -1,5 +1,5 @@
 import { Routes, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { fetchCourses } from 'store/courses/thunk';
@@ -18,7 +18,6 @@ import Loader from 'common/Loader/Loader';
 import Path from 'constants/Path';
 
 function CoursesList() {
-	const [loading, setLoading] = useState(true);
 	const dispatch = useDispatch<AppDispatch>();
 	const courses = useSelector(allCourses);
 	const authors = useSelector(allAuthors);
@@ -26,38 +25,22 @@ function CoursesList() {
 	const isAuthorsLoading = useSelector(authorsLoading);
 
 	useEffect(() => {
-		fetchAuthorsInfo();
-		fetchCoursesInfo();
+		dispatch(fetchAuthors());
+		dispatch(fetchCourses());
 	}, []);
-
-	const fetchAuthorsInfo = async () => {
-		try {
-			await dispatch(fetchAuthors());
-		} finally {
-			setLoading(false);
-		}
-	};
-
-	const fetchCoursesInfo = async () => {
-		try {
-			await dispatch(fetchCourses());
-		} finally {
-			setLoading(false);
-		}
-	};
 
 	const formatCourses = () => {
 		return courses.map((course) => {
 			return {
 				...course,
-				authors: course.authors.map(
-					(authorId) => authors.find((author) => author.id === authorId).name
+				authors: course?.authors.map(
+					(authorId) => authors?.find((author) => author.id === authorId).name
 				),
 			};
 		});
 	};
 
-	if (loading || isAuthorsLoading || isCoursesLoading) return <Loader />;
+	if (isAuthorsLoading || isCoursesLoading) return <Loader />;
 
 	const coursesCards = formatCourses();
 

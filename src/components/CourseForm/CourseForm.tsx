@@ -39,7 +39,6 @@ import Input from 'common/Input/Input';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import { Form, Row, Col, FormGroup, List, Container } from 'reactstrap';
 
-//import formatCreationDate from 'helpers/formatCreationDate';
 import formatDuration from 'helpers/formatDuration';
 
 import { Course } from 'components/Courses/Course.types';
@@ -64,11 +63,11 @@ const CourseForm = () => {
 	const courseId = params.courseId;
 
 	useEffect(() => {
-		if (courseId) {
+		if (courseId && courses.length && authors.length) {
 			const course = courses.find((course) => course.id === courseId);
 			setCourse({
 				...course,
-				authors: course.authors.map((authorId) =>
+				authors: course?.authors.map((authorId) =>
 					authors.find((author) => author.id === authorId)
 				),
 			});
@@ -187,7 +186,7 @@ const CourseForm = () => {
 						<h5>{DURATION}</h5>
 						<Input
 							labelText={DURATION}
-							value={course.duration.toString()}
+							value={course.duration?.toString()}
 							placeholder={DURATION_PLACEHOLDER}
 							onChange={handleChange}
 							type='number'
@@ -206,7 +205,7 @@ const CourseForm = () => {
 						) : (
 							<List type='unstyled'>
 								{authors.map((author) => {
-									if (!course.authors.includes(author))
+									if (!course.authors?.includes(author))
 										return (
 											<li key={author.id}>
 												<AuthorItem
@@ -222,7 +221,7 @@ const CourseForm = () => {
 					</FormGroup>
 					<FormGroup>
 						<h5>{COURSE_AUTHORS}</h5>
-						{course.authors.length < 1 ? (
+						{!course.authors || course.authors.length < 1 ? (
 							EMPTY_AUTHORS
 						) : (
 							<List type='unstyled'>
