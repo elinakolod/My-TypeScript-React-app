@@ -12,15 +12,11 @@ const usersInitialState = {
 };
 
 test('coursesReducer should return the initial state', () => {
-	expect(coursesReducer(undefined, { type: undefined })).toEqual(
-		initialState
-	);
+	expect(coursesReducer(undefined, { type: undefined })).toEqual(initialState);
 });
 
 test('authorsReducer should return the initial state', () => {
-	expect(authorsReducer(undefined, { type: undefined })).toEqual(
-		initialState
-	);
+	expect(authorsReducer(undefined, { type: undefined })).toEqual(initialState);
 });
 
 test('usersReducer should return the initial state', () => {

@@ -42,8 +42,8 @@ describe('Courses', () => {
 	});
 
 	it('should display all courses', () => {
-		expect(
-			screen.queryAllByText('Show course', { exact: true }).length
-		).toBe(2);
+		expect(screen.queryAllByText('Show course', { exact: true }).length).toBe(
+			2
+		);
 	});
 });
