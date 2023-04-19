@@ -1,6 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import api from 'utils/api';
+import { useDispatch } from 'react-redux';
+
+import { register } from 'store/users/thunk';
+
+import { AppDispatch } from 'store';
 
 import {
 	NAME,
@@ -15,7 +19,7 @@ import {
 } from 'constants/constants';
 import Path from 'constants/Path';
 
-import { Container, Form, FormGroup, Alert } from 'reactstrap';
+import { Container, Form, FormGroup } from 'reactstrap';
 import Input from 'common/Input/Input';
 import Button from 'common/Button/Button';
 
@@ -31,8 +35,8 @@ const formInputs: User = {
 
 const Registration = () => {
 	const [user, setUser] = useState(formInputs);
-	const [error, setError] = useState();
 	const navigate = useNavigate();
+	const dispatch = useDispatch<AppDispatch>();
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -50,17 +54,13 @@ const Registration = () => {
 	};
 
 	const registerUser = async () => {
-		try {
-			await api.auth.register(user);
-			navigate(`/${Path.login}`);
-		} catch (error) {
-			setError(error.response.data.errors);
-		}
+		const response = await dispatch(register(user));
+
+		if (response.payload) navigate(`/${Path.login}`);
 	};
 
 	return (
 		<Container className={styles.authForm}>
-			{error && <Alert color='danger'>{error}</Alert>}
 			<h2>{REGISTRATION}</h2>
 			<Form onSubmit={handleSubmit}>
 				<FormGroup>

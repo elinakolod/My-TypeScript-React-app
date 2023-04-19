@@ -4,6 +4,7 @@ const Path = {
 	course: {
 		index: 'courses',
 		new: 'add',
+		update: 'update',
 	},
 };
 

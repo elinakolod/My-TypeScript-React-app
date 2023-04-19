@@ -1,7 +1,5 @@
-export const token = (state) => state.users.token;
+export const userName = (state) => state.users.user.name;
 
-export const userName = (state) => state.users.name;
+export const isUserAdmin = (state) => state.users.user.role === 'admin';
 
-export const userEmail = (state) => state.users.email;
-
-export const isAuth = (state) => state.users.isAuth;
+export const authError = (state) => state.users.error;

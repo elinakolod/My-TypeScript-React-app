@@ -2,9 +2,9 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { login } from 'store/users/usersSlice';
+import { login } from 'store/users/thunk';
 
-import api from 'utils/api';
+import { AppDispatch } from 'store';
 
 import {
 	EMAIL,
@@ -17,7 +17,7 @@ import {
 } from 'constants/constants';
 import Path from 'constants/Path';
 
-import { Container, Form, FormGroup, Alert } from 'reactstrap';
+import { Container, Form, FormGroup } from 'reactstrap';
 import Input from 'common/Input/Input';
 import Button from 'common/Button/Button';
 
@@ -32,9 +32,8 @@ const formInputs: User = {
 
 const Login = () => {
 	const [user, setUser] = useState(formInputs);
-	const [error, setError] = useState();
 	const navigate = useNavigate();
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -53,20 +52,12 @@ const Login = () => {
 	};
 
 	const loginUser = async () => {
-		try {
-			const response = await api.auth.login(user);
-
-			dispatch(login(response));
-			localStorage.setItem('token', response.result);
-			navigate(`/${Path.course.index}`);
-		} catch (error) {
-			setError(error.response.data.errors);
-		}
+		await dispatch(login(user));
+		navigate(`/${Path.course.index}`);
 	};
 
 	return (
 		<Container className={styles.authForm}>
-			{error && <Alert color='danger'>{error}</Alert>}
 			<h2>{LOGIN}</h2>
 			<Form onSubmit={handleSubmit}>
 				<FormGroup>

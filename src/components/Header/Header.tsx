@@ -2,7 +2,9 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { userName } from 'store/users/selectors';
-import { logout } from 'store/users/usersSlice';
+import { logout } from 'store/users/thunk';
+
+import { AppDispatch } from 'store';
 
 import { LOGOUT } from 'constants/constants';
 import Path from 'constants/Path';
@@ -16,12 +18,11 @@ import { Navbar, NavbarBrand } from 'reactstrap';
 const Header = () => {
 	const navigate = useNavigate();
 	const location = useLocation();
-	const dispatch = useDispatch();
+	const dispatch = useDispatch<AppDispatch>();
 	const name = useSelector(userName);
 
-	const handleButtonClick = () => {
-		dispatch(logout());
-		localStorage.clear();
+	const handleButtonClick = async () => {
+		await dispatch(logout());
 		navigate(`/${Path.login}`);
 	};
 

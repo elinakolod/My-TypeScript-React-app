@@ -1,11 +1,13 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { v4 as uuidv4 } from 'uuid';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { add as addCourse } from 'store/courses/coursesSlice';
-import { add as addAuthor } from 'store/authors/authorsSlice';
+import { createCourse, updateCourse } from 'store/courses/thunk';
+import { allCourses } from 'store/courses/selectors';
+import { createAuthor } from 'store/authors/thunk';
 import { allAuthors } from 'store/authors/selectors';
+
+import { AppDispatch } from 'store';
 
 import {
 	CREATE_COURSE,
@@ -26,17 +28,17 @@ import {
 	COURSE_ERROR,
 	INVALID_SUMBOLS,
 	DEFAULT_HOURS,
+	UPDATE_COURSE,
 } from 'constants/constants';
 import Path from 'constants/Path';
 
-import styles from './CreateCourse.module.css';
+import styles from './CourseForm.module.css';
 
 import Button from 'common/Button/Button';
 import Input from 'common/Input/Input';
 import AuthorItem from './components/AuthorItem/AuthorItem';
 import { Form, Row, Col, FormGroup, List, Container } from 'reactstrap';
 
-import formatCreationDate from 'helpers/formatCreationDate';
 import formatDuration from 'helpers/formatDuration';
 
 import { Course } from 'components/Courses/Course.types';
@@ -45,17 +47,32 @@ const formInputs = {
 	id: '',
 	title: '',
 	description: '',
-	creationDate: formatCreationDate(),
 	duration: '',
+	creationDate: '',
 	authors: [],
 };
 
-const CreateCourse = () => {
-	const dispatch = useDispatch();
+const CourseForm = () => {
+	const dispatch = useDispatch<AppDispatch>();
 	const navigate = useNavigate();
+	const params = useParams();
 	const authors = useSelector(allAuthors);
+	const courses = useSelector(allCourses);
 	const [authorName, setAuthorName] = useState('');
 	const [course, setCourse] = useState(formInputs);
+	const courseId = params.courseId;
+
+	useEffect(() => {
+		if (courseId && courses.length && authors.length) {
+			const course = courses.find((course) => course.id === courseId);
+			setCourse({
+				...course,
+				authors: course?.authors.map((authorId) =>
+					authors.find((author) => author.id === authorId)
+				),
+			});
+		}
+	}, [courseId]);
 
 	const handleChange = (event) => {
 		const { name, value } = event.target;
@@ -83,9 +100,9 @@ const CreateCourse = () => {
 
 	const handleAuthorCreate = () => {
 		if (!INVALID_SUMBOLS.test(authorName) && authorName.length > 1) {
-			const author = { id: uuidv4(), name: authorName };
+			const author = { name: authorName };
 
-			dispatch(addAuthor(author));
+			dispatch(createAuthor(author));
 		}
 
 		setAuthorName('');
@@ -114,12 +131,13 @@ const CreateCourse = () => {
 		) {
 			const courseFields: Course = {
 				...course,
-				id: uuidv4(),
 				duration: +course.duration,
 				authors: course.authors.map((author) => author.id),
 			};
 
-			dispatch(addCourse(courseFields));
+			courseId
+				? dispatch(updateCourse(courseFields))
+				: dispatch(createCourse(courseFields));
 			navigate(`/${Path.course.index}`);
 		} else {
 			alert(COURSE_ERROR);
@@ -131,7 +149,9 @@ const CreateCourse = () => {
 	return (
 		<Form onSubmit={handleSubmit}>
 			<Container>
-				<Button className={styles.createButton}>{CREATE_COURSE}</Button>
+				<Button className={styles.createButton}>
+					{courseId ? UPDATE_COURSE : CREATE_COURSE}
+				</Button>
 				<FormGroup>
 					<Input
 						labelText={TITLE}
@@ -166,7 +186,7 @@ const CreateCourse = () => {
 						<h5>{DURATION}</h5>
 						<Input
 							labelText={DURATION}
-							value={course.duration.toString()}
+							value={course.duration?.toString()}
 							placeholder={DURATION_PLACEHOLDER}
 							onChange={handleChange}
 							type='number'
@@ -185,7 +205,7 @@ const CreateCourse = () => {
 						) : (
 							<List type='unstyled'>
 								{authors.map((author) => {
-									if (!course.authors.includes(author))
+									if (!course.authors?.includes(author))
 										return (
 											<li key={author.id}>
 												<AuthorItem
@@ -201,7 +221,7 @@ const CreateCourse = () => {
 					</FormGroup>
 					<FormGroup>
 						<h5>{COURSE_AUTHORS}</h5>
-						{course.authors.length < 1 ? (
+						{!course.authors || course.authors.length < 1 ? (
 							EMPTY_AUTHORS
 						) : (
 							<List type='unstyled'>
@@ -223,4 +243,4 @@ const CreateCourse = () => {
 	);
 };
 
-export default CreateCourse;
+export default CourseForm;

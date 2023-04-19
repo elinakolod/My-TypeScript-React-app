@@ -1,13 +1,19 @@
-export type Course = {
+export interface Course extends newCourse {
 	id: string;
+	creationDate: string;
+}
+
+export interface newCourse {
 	title: string;
 	description: string;
-	creationDate: string;
 	duration: number;
 	authors: string[];
-};
+}
 
-export type Author = {
+export interface Author extends newAuthor {
 	id: string;
+}
+
+export interface newAuthor {
 	name: string;
-};
+}

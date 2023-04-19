@@ -1,6 +1,13 @@
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { BACK, AUTHORS, DURATION, CREATED, ID } from 'constants/constants';
+import {
+	BACK,
+	AUTHORS,
+	DURATION,
+	CREATED,
+	ID,
+	NO_COURSE,
+} from 'constants/constants';
 
 import formatDuration from 'helpers/formatDuration';
 
@@ -19,24 +26,26 @@ const CourseInfo = ({ courses }: CourseProps) => {
 	const params = useParams();
 	const course = courses.find((course) => course.id === params.courseId);
 
+	if (!course) return <>{NO_COURSE}</>;
+
 	return (
 		<Container>
 			<Button color='link' onClick={() => navigate(-1)}>
 				{BACK}
 			</Button>
-			<h2 className={styles.courseInfoTitle}>{course.title}</h2>
+			<h2 className={styles.courseInfoTitle}>{course?.title}</h2>
 			<Row>
-				<Col md={6}>{course.description}</Col>
+				<Col md={6}>{course?.description}</Col>
 				<Col md={6}>
 					<dl>
 						<dt>{ID}</dt>
-						<dd>{course.id}</dd>
+						<dd>{course?.id}</dd>
 						<dt>{DURATION}</dt>
-						<dd>{formatDuration(course.duration)}</dd>
+						<dd>{formatDuration(course?.duration)}</dd>
 						<dt>{CREATED}</dt>
-						<dd>{course.creationDate.replace(/\//g, '.')}</dd>
+						<dd>{course?.creationDate.replace(/\//g, '.')}</dd>
 						<dt>{AUTHORS}</dt>
-						<dd>{course.authors.join(', ')}</dd>
+						<dd>{course?.authors.join(', ')}</dd>
 					</dl>
 				</Col>
 			</Row>

@@ -1,28 +1,64 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+
+import {
+	fetchCourses,
+	createCourse,
+	destroyCourse,
+	updateCourse,
+} from './thunk';
 
 import { Course } from 'components/Courses/Course.types';
 
-const initialState: Course[] = [];
+type coursesState = {
+	entities: Course[];
+	loading: boolean;
+	error: string;
+};
+
+const initialState: coursesState = {
+	entities: [],
+	loading: false,
+	error: '',
+};
 
 export const coursesSlice = createSlice({
 	name: 'courses',
 	initialState: initialState,
-	reducers: {
-		all: (state, action: PayloadAction<Course[]>) => action.payload,
-		remove: (state, action: PayloadAction<Course>) => {
-			return state.filter((course) => course.id !== action.payload.id);
-		},
-		edit: (state, action: PayloadAction<Course>) => {
-			state.map((course) => {
-				if (course.id === action.payload.id) action.payload;
-			});
-		},
-		add: (state, action: PayloadAction<Course>) => {
-			state.push(action.payload);
-		},
+	reducers: {},
+	extraReducers: (builder) => {
+		builder
+			.addCase(fetchCourses.pending, (state) => {
+				state.loading = true;
+			})
+			.addCase(fetchCourses.fulfilled, (state, { payload }) => {
+				state.entities = payload;
+				state.loading = false;
+			})
+			.addCase(createCourse.fulfilled, (state, { payload }) => {
+				state.entities.push(payload);
+			})
+			.addCase(destroyCourse.fulfilled, (state, { meta }) => {
+				return {
+					...state,
+					entities: state.entities.filter((course) => course.id !== meta.arg),
+				};
+			})
+			.addCase(updateCourse.fulfilled, (state, { payload }) => {
+				return {
+					...state,
+					entities: state.entities.map((course) => {
+						return course.id === payload.id ? payload : course;
+					}),
+				};
+			})
+			.addMatcher(
+				(action) => action.type.endsWith('/rejected'),
+				(state, { error }) => {
+					state.error = error.message;
+					state.loading = false;
+				}
+			);
 	},
 });
-
-export const { all, remove, edit, add } = coursesSlice.actions;
 
 export default coursesSlice.reducer;
