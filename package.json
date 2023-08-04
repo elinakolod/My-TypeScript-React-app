@@ -27,13 +27,13 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --transformIgnorePatterns \"node_modules/(?!axios)/\"",
     "eject": "react-scripts eject",
     "eslint": "eslint --ext .js,.jsx,.ts,.tsx src",
     "eslint:fix": "eslint --fix --ext .js,.jsx,.ts,.tsx src",
     "test:nowatch": "react-scripts test --watchAll=false",
     "prepare": "husky install",
-    "prepublish": "npm run eslint:fix"
+    "prepublish": "npm run eslint:fix && npm run test"
   },
   "eslintConfig": {
     "extends": [

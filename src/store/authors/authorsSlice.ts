@@ -33,7 +33,7 @@ export const authorsSlice = createSlice({
 				state.entities.push(payload);
 			})
 			.addMatcher(
-				(action) => action.type.endsWith('/rejected'),
+				(action) => action.type?.endsWith('/rejected'),
 				(state, { error }) => {
 					state.error = error.message;
 					state.loading = false;

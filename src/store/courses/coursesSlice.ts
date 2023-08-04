@@ -52,7 +52,7 @@ export const coursesSlice = createSlice({
 				};
 			})
 			.addMatcher(
-				(action) => action.type.endsWith('/rejected'),
+				(action) => action.type?.endsWith('/rejected'),
 				(state, { error }) => {
 					state.error = error.message;
 					state.loading = false;

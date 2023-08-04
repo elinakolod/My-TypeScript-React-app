@@ -31,7 +31,7 @@ export const usersSlice = createSlice({
 			})
 			.addCase(logout.fulfilled, () => initialState)
 			.addMatcher(
-				(action) => action.type.endsWith('/rejected'),
+				(action) => action.type?.endsWith('/rejected'),
 				(state, { error }) => {
 					state.error = error.message;
 				}
